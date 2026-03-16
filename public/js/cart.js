@@ -1,9 +1,9 @@
 function formatRupiah(number){
-    return "Rp. " + number.toLocaleString("id-ID") + ",00";
+    return "" + number.toLocaleString("id-ID") + " Points";
 }
 
 function getPrice(text){
-    return parseInt(text.replace(/[^0-9]/g,""));
+    return parseInt(text.replace(/[^0-9]/g,"")) || 0;
 }
 
 function updateCart(){
@@ -13,16 +13,19 @@ function updateCart(){
 
     cartItems.forEach(item => {
 
-        let unitPriceText = item.querySelector(".unit-price").innerText;
-        let unitPrice = getPrice(unitPriceText);
+        let checkbox = item.querySelector(".item-check");
+        let priceText = item.querySelector(".unit-price").innerText;
+        let price = getPrice(priceText);
 
         let qty = parseInt(item.querySelector(".qty-num").innerText);
 
-        let itemTotal = unitPrice * qty;
+        let total = price * qty;
 
-        item.querySelector(".item-total").innerText = formatRupiah(itemTotal);
+        item.querySelector(".item-total").innerText = formatRupiah(total);
 
-        grandTotal += itemTotal;
+        if(checkbox && checkbox.checked){
+            grandTotal += total;
+        }
 
     });
 
@@ -30,13 +33,15 @@ function updateCart(){
         "Total : " + formatRupiah(grandTotal);
 }
 
-
 document.querySelectorAll(".cart-item").forEach(item => {
 
-    let minusBtn = item.querySelector(".qty-btn:nth-child(1)");
-    let plusBtn = item.querySelector(".qty-btn:nth-child(3)");
+    let qtyBtns = item.querySelectorAll(".qty-btn");
+    let minusBtn = qtyBtns[0];
+    let plusBtn = qtyBtns[1];
+
     let qtyNum = item.querySelector(".qty-num");
     let deleteBtn = item.querySelector(".delete-btn");
+    let checkbox = item.querySelector(".item-check");
 
     plusBtn.addEventListener("click", () => {
 
@@ -62,6 +67,8 @@ document.querySelectorAll(".cart-item").forEach(item => {
         updateCart();
 
     });
+
+    checkbox.addEventListener("change", updateCart);
 
 });
 
