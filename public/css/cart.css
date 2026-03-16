@@ -1,0 +1,174 @@
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.logo span {
+    font-weight: 300;
+    font-style: italic;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Cart Container */
+.cart-container {
+    padding: 40px 80px 150px 80px;
+}
+
+/* Cart Item */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Checkbox */
+.item-check{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Product Section */
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1;
+}
+
+/* Product Image */
+.product-image {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+}
+
+/* Product Details */
+.product-details h3 {
+    font-size: 18px;
+    margin-bottom: 3px;
+}
+
+.shop-name {
+    color: #555;
+    font-size: 13px;
+}
+
+.unit-price {
+    color: #999;
+    font-size: 12px;
+    margin: 4px 0 10px 0;
+}
+
+/* Quantity & Delete Controls */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background-color: #e0e0e0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.qty-num {
+    font-size: 15px;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 18px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+/* Total Price */
+.item-total {
+    font-size: 18px;
+    font-weight: 500;
+    min-width: 120px;
+    text-align: right;
+}
+
+/* Fixed Checkout Footer */
+.checkout-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #d1e9f0;
+    padding: 25px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #b8d4db;
+}
+
+.grand-total {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.btn-checkout {
+    background-color: #fafff0;
+    border: 1.5px solid #000;
+    padding: 12px 60px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-checkout:hover {
+    background-color: #eff5e0;
+}
