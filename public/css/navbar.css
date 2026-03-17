@@ -1,70 +1,100 @@
+/* NAVBAR */
 .navbar{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:16px 60px;
+    background:#ffffff;
+
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* logo */
-.logo{
-    font-size: 22px;
-    font-weight: bold;
+
+/* LOGO */
+.navbar .logo{
+    font-size:24px;
+    font-weight:700;
 }
 
-/* menu */
-.nav-menu{
-    display: flex;
-    list-style: none;
-    gap: 90px; /* jarak antar tulisan */
+.navbar .logo span{
+    font-style:italic;
+    font-weight:400;
 }
 
-.nav-menu a{
-    text-decoration: none;
-    color: black;
+
+/* MENU */
+.navbar .nav-menu{
+    display:flex;
+    list-style:none;
+    gap:80px;
+
+    margin:0;
+    padding:0;
 }
 
-/* icon */
-.nav-icons{
-    display: flex;
-    gap: 70px;
+.navbar .nav-menu li{
+    margin:0;
 }
 
+.navbar .nav-menu a{
+    text-decoration:none;
+    color:black;
+    font-size:16px;
+}
+
+
+/* ICON */
+.navbar .nav-icons{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.navbar .nav-icons i{
+    font-size:20px;
+    cursor:pointer;
+}
+
+
+/* USER MENU */
 .user-menu{
-    position: relative;
+    position:relative;
 }
 
-#userIcon{
-    cursor: pointer;
-}
 
-/* dropdown */
+/* DROPDOWN */
 .dropdown-menu{
-    position: absolute;
-    right: 0;
-    top: 40px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 180px;
-    padding: 12px;
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position:absolute;
+    right:0;
+    top:42px;
+
+    background:white;
+    border:1px solid #ddd;
+    border-radius:8px;
+
+    width:180px;
+    padding:12px;
+
+    display:none;
+    flex-direction:column;
+    gap:8px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
 .dropdown-menu a{
-    text-decoration: none;
-    color: black;
-    font-size: 14px;
+    text-decoration:none;
+    color:black;
+    font-size:14px;
 }
 
 .dropdown-menu a:hover{
-    color: #007bff;
+    color:#007bff;
 }
 
 .balance{
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 6px;
+    font-weight:600;
+    border-bottom:1px solid #eee;
+    padding-bottom:6px;
 }
