@@ -28,93 +28,77 @@
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Wadah Pen">
+
+               <a href="product-desc"><img class="gambar" src="../../../foto/tempatpen.png" alt="Tempat Pen"></a>
             </div>
             <h3>Wadah Pen</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <p>Posted by : Ameng</p>
+            <p class="price">Price : 35 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Gantungan Jepang">
+                <img class="gambar" src="../../../foto/gantungan.png" alt="Gantungan">
             </div>
             <h3>Gantungan Jpan</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <p>Posted by : Aming</p>
+            <p class="price">Price : 10 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Penyangga Buku">
+                <img class="gambar" src="../../../foto/penyangga.png" alt="Penyangga">
             </div>
             <h3>Penyangga Buku</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <p>Posted by : Aching</p>
+            <p class="price">Price : 30 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Stabilo">
+                <img class="gambar"src="../../../foto/stabilo.png" alt="Stabilo">
             </div>
             <h3>Stabilo</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <p>Posted by : Akien</p>
+            <p class="price">Price : 25 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Penggaris">
-            </div>
-            <h3>Penggaris</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
-        </div>
-
-        <div class="item-card">
-            <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Jasa Tutor">
+                <img class="gambar" src="../../../foto/tutor.png" alt="Jasa Tutor">
             </div>
             <h3>Jasa Tutor</h3>
-            <p>Posted by : Louis</p>
+            <p>Posted by : Anam</p>
             <p class="price">Price : Bisa di hubungi...</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Pulpen">
+                <img class="gambar"src="../../../foto/pulpen.png" alt="Pulpen">
             </div>
             <h3>Pulpen</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <p>Posted by : Acong </p>
+            <p class="price">Price : 5 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Pulpen Hitam">
+                <img class="gambar" src="../../../foto/penhitam.png" alt="Pulpen Hitam">
             </div>
-            <h3>Pulpen</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <h3>Pulpen Hitam</h3>
+            <p>Posted by : Aju </p>
+            <p class="price">Price : 7 Points</p>
         </div>
 
         <div class="item-card">
             <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Headphone">
+                <img class="gambar" src="../../../foto/headset.png" alt="Headset">
             </div>
-            <h3>Headphone Second</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
+            <h3>Headset</h3>
+            <p>Posted by : Yanto</p>
+            <p class="price">Price : 90 Points</p>
         </div>
-
-        <div class="item-card">
-            <div class="image-box">
-                <img src="https://via.placeholder.com/150" alt="Jasa Nyatat">
-            </div>
-            <h3>Jasa Nyatat</h3>
-            <p>Posted by : Louis</p>
-            <p class="price">Price : Bisa di hubungi...</p>
-        </div>
+    
 
     </section>
 
