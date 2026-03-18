@@ -1,39 +1,81 @@
-<head>
-    <link rel="stylesheet" href="../css/navbar.css">
-    <script defer src="../js/navbar.js"></script>
-</head>
+<link rel="stylesheet" href="../css/navbar.css">
 
-<nav class="navbar">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <div class="logo">
+<script defer src="../js/navbar.js"></script>
+
+
+<nav class="tc-navbar">
+
+    <!-- LOGO -->
+    <div class="tc-logo">
         Trade<span>Coin</span>
     </div>
 
-    <ul class="nav-menu">
+
+    <!-- MENU -->
+    <ul class="tc-menu">
         <li><a href="#">Search Item & Service</a></li>
         <li><a href="#">Sell Item & Service</a></li>
         <li><a href="#">Guide</a></li>
         <li><a href="#">Contact Us</a></li>
     </ul>
 
-    <div class="nav-icons">
 
-        <i class="fas fa-shopping-cart"></i>
+    <!-- RIGHT SIDE -->
+    <div class="tc-right">
 
-        <div class="user-menu">
+        <!-- CART -->
+        <div class="tc-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="tc-cart-count">2</span>
+        </div>
 
-            <i class="fas fa-user-circle" id="userIcon"></i>
 
-            <div class="dropdown-menu" id="userDropdown">
+        <!-- USER MENU -->
+        <div class="tc-user">
 
-                <p class="balance">points : 500 </p>
+            <!-- USER ICON -->
+            <div class="tc-avatar" id="tcUserIcon">
+                <i class="fas fa-user-circle"></i>
+            </div>
 
-                <a href="#">Account Profile</a>
-                <a href="#">Account Setting</a>
-                <a href="#">Logout</a>
+            <!-- DROPDOWN -->
+            <div class="tc-dropdown" id="tcDropdown">
+
+                <p class="tc-balance">
+                    Points : <b>500</b>
+                </p>
+
+                <a href="#">
+                    <i class="fa fa-user"></i>
+                    Account Profile
+                </a>
+
+                <a href="#">
+                    <i class="fa fa-gear"></i>
+                    Account Setting
+                </a>
+
+                <a href="#">
+                    <i class="fa fa-clock"></i>
+                    Transaction History
+                </a>
+
+                <a href="#">
+                    <i class="fa fa-right-from-bracket"></i>
+                    Logout
+                </a>
 
             </div>
 
+        </div>
+
+
+        <!-- MOBILE HAMBURGER -->
+        <div class="tc-hamburger" id="tcHamburger">
+            <i class="fas fa-bars"></i>
         </div>
 
     </div>

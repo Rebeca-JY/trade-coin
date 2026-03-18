@@ -1,20 +1,31 @@
-const userIcon = document.getElementById("userIcon");
-const dropdown = document.getElementById("userDropdown");
+const userIcon = document.getElementById("tcUserIcon");
+const dropdown = document.getElementById("tcDropdown");
 
-userIcon.addEventListener("click", () => {
+const hamburger = document.getElementById("tcHamburger");
+const menu = document.querySelector(".tc-menu");
 
-    if(dropdown.style.display === "flex"){
-        dropdown.style.display = "none";
-    }else{
-        dropdown.style.display = "flex";
-    }
+
+userIcon.addEventListener("click",(e)=>{
+
+e.stopPropagation();
+dropdown.classList.toggle("active");
 
 });
 
-document.addEventListener("click", function(e){
 
-    if(!userIcon.contains(e.target) && !dropdown.contains(e.target)){
-        dropdown.style.display = "none";
-    }
+document.addEventListener("click",(e)=>{
+
+if(!dropdown.contains(e.target) && !userIcon.contains(e.target)){
+
+dropdown.classList.remove("active");
+
+}
+
+});
+
+
+hamburger.addEventListener("click",()=>{
+
+menu.classList.toggle("active");
 
 });
