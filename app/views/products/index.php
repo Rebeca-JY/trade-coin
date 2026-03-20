@@ -29,7 +29,7 @@
         <div class="item-card">
             <div class="image-box">
 
-               <a href="product-desc"><img class="gambar" src="../../../foto/tempatpen.png" alt="Tempat Pen"></a>
+               <a href="/ProductDetails"><img class="gambar" src="../../../foto/tempatpen.png" alt="Tempat Pen"></a>
             </div>
             <h3>Wadah Pen</h3>
             <p>Posted by : Ameng</p>

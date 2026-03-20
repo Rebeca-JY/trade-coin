@@ -19,7 +19,7 @@ $router->add('GET', '/products', 'ProductController', 'index');
 
 
 // Detail Barang -> ProductController@show
-$router->add('GET', '/products-Details', 'Product-DetailController', 'DescView');
+$router->add('GET', '/ProductDetails', 'ProductDetailController', 'DescView');
 // edit Barang -> ProductController@edit
 // tambah Barang -> ProductController@create
 
