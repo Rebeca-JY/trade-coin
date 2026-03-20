@@ -18,14 +18,19 @@
             <li><a href="#">Contact Us</a></li>
         </ul>
     
-        <div class="right">
-        
-            <div class=""></div>
+       <div class="right">
+
+            <a href="/messages" class="message-icon">
+                <i class="fas fa-envelope"></i>
+                <span class="message-count">3</span>
+            </a>
+
             <a href="/cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count">5</span>
             </a>
-            </div>
+
+        </div>
     
        
             <div class="user">
