@@ -1,0 +1,63 @@
+body {
+    background-color: #c2d7dc;
+    font-family: Georgia, serif;
+    margin: 0;
+}
+
+.back {
+    display: inline-block;
+    margin: 1.25rem 0 0 1.25rem;
+    text-decoration: none;
+    color: black;
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 3.75rem;
+    padding: 2.5rem 3.75rem;
+}
+
+.image img {
+    width: 50rem;
+    height: 50rem;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    display: block;
+}
+
+.detail {
+    max-width: 31.25rem;
+}
+
+.detail h1 {
+    font-size: 4rem;
+    margin-bottom: 1.25rem;
+}
+
+.detail p {
+    font-size: 1.25rem;
+    margin: 0.875rem 0;
+    line-height: 1.5;
+}
+
+.profile {
+    margin-top: 3.125rem;
+}
+
+.profile h2 {
+    font-size: 2rem;
+    display: inline-block;
+    margin-right: 1.25rem;
+}
+
+.btn {
+    padding: 0.75rem 1.75rem;
+    border: none;
+    border-radius: 62.4375rem;
+    background: white;
+    font-size: 1.125rem;
+    cursor: pointer;
+}
