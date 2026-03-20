@@ -7,24 +7,43 @@
     <link rel="stylesheet" href="css/detail-barang.css">
 </head>
 <body>
+
     <a href="daftar-barang.php" class="back">← Back</a>
 
     <div class="container">
+
+        <!-- Gambar -->
         <div class="image">
             <img src="foto/tape.jpg" alt="Produk">
         </div>
 
+        <!-- Detail -->
         <div class="detail">
             <h1>Correction Tape</h1>
-            <p>Price: 7.000</p>
-            <p>Condition: New, Sealed.</p>
-            <p>Description: You can ask anything about the product with me. Just click the button "Message me!" below my username.</p>
+
+            <div class="box desc">
+                Description: You can ask anything about the product with me.
+                Just open my profile and dm me or just click “Message me!”
+                beside my username below.
+            </div>
+
+            <div class="box price">Price : 5 Coins</div>
+            <div class="box">Category : Stationery</div>
+            <div class="box">Material : Plastic</div>
 
             <div class="profile">
                 <h2>Username: James Luther</h2>
                 <button class="btn">Message me!</button>
             </div>
         </div>
+
     </div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+        <button class="cart">Add to cart</button>
+        <button class="buy">Buy it now</button>
+    </div>
+
 </body>
 </html>
