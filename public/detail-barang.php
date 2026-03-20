@@ -18,7 +18,7 @@
             <h1>Correction Tape</h1>
             <p>Price: 7.000</p>
             <p>Condition: New, Sealed.</p>
-            <p>Description: You can ask anything about the product with me. Just click the button "Message me!" below my usn.</p>
+            <p>Description: You can ask anything about the product with me. Just click the button "Message me!" below my username.</p>
 
             <div class="profile">
                 <h2>Username: James Luther</h2>
