@@ -19,7 +19,8 @@
         </ul>
     
         <div class="right">
-            <div class="cart">
+        
+            <div class=""></div>
             <a href="/cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count">5</span>
