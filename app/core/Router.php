@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use App\Controllers\StudentController;
+use App\Controllers\ProductSDetailController;
 
 class Router
 {
@@ -44,7 +44,6 @@ class Router
             }
         }
 
-  
         http_response_code(404);
         echo '<h1>404 - Page Not Found</h1>';
     }

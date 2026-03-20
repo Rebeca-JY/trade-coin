@@ -1,11 +1,11 @@
 <?php
 namespace App\Controllers;
 
-class ProductController
+class ProductDetailController
 {
-    public function index()
+    public function DescView()
     {
-        require_once '../app/views/products/product-desc.php';
+        require_once '../app/views/products/Productdetail.php';
     }
 }
 

@@ -1,75 +1,67 @@
-function formatRupiah(number){
-    return "" + number.toLocaleString("id-ID") + " Points";
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const cartContainer = document.querySelector(".cart-container");
+    const grandTotalElement = document.querySelector(".grand-total");
 
-function getPrice(text){
-    return parseInt(text.replace(/[^0-9]/g,"")) || 0;
-}
+    const formatPoints = (num) => {
+        return num.toLocaleString("id-ID") + " Points";
+    };
 
-function updateCart(){
+    const parsePoints = (text) => {
+        return parseInt(text.replace(/[^0-9]/g, "")) || 0;
+    };
 
-    let cartItems = document.querySelectorAll(".cart-item");
-    let grandTotal = 0;
+    const updateCart = () => {
+        let totalAll = 0;
+        const items = document.querySelectorAll(".cart-item");
 
-    cartItems.forEach(item => {
+        items.forEach(item => {
+            const isChecked = item.querySelector(".item-check").checked;
+            const price = parsePoints(item.querySelector(".unit-price").innerText);
+            const qty = parseInt(item.querySelector(".qty-num").innerText);
+            const subtotal = price * qty;
+            
+            item.querySelector(".item-total").innerText = formatPoints(subtotal);
 
-        let checkbox = item.querySelector(".item-check");
-        let priceText = item.querySelector(".unit-price").innerText;
-        let price = getPrice(priceText);
+            if (isChecked) {
+                totalAll += subtotal;
+            }
+        });
 
-        let qty = parseInt(item.querySelector(".qty-num").innerText);
+        grandTotalElement.innerHTML = `Total : <span>${formatPoints(totalAll)}</span>`;
+    };
 
-        let total = price * qty;
+    cartContainer.addEventListener("click", (e) => {
+        const target = e.target;
+        const item = target.closest(".cart-item");
+        if (!item) return;
 
-        item.querySelector(".item-total").innerText = formatRupiah(total);
+        const qtyNum = item.querySelector(".qty-num");
+        let currentQty = parseInt(qtyNum.innerText);
 
-        if(checkbox && checkbox.checked){
-            grandTotal += total;
-        }
-
-    });
-
-    document.querySelector(".grand-total").innerText =
-        "Total : " + formatRupiah(grandTotal);
-}
-
-document.querySelectorAll(".cart-item").forEach(item => {
-
-    let qtyBtns = item.querySelectorAll(".qty-btn");
-    let minusBtn = qtyBtns[0];
-    let plusBtn = qtyBtns[1];
-
-    let qtyNum = item.querySelector(".qty-num");
-    let deleteBtn = item.querySelector(".delete-btn");
-    let checkbox = item.querySelector(".item-check");
-
-    plusBtn.addEventListener("click", () => {
-
-        qtyNum.innerText = parseInt(qtyNum.innerText) + 1;
-        updateCart();
-
-    });
-
-    minusBtn.addEventListener("click", () => {
-
-        let qty = parseInt(qtyNum.innerText);
-
-        if(qty > 1){
-            qtyNum.innerText = qty - 1;
+        if (target.classList.contains("qty-btn") || target.parentElement.classList.contains("qty-btn")) {
+            if (target.innerText === "+" || target.textContent === "+") {
+                qtyNum.innerText = currentQty + 1;
+            } else if (target.innerText === "-" || target.textContent === "-") {
+                if (currentQty > 1) qtyNum.innerText = currentQty - 1;
+            }
             updateCart();
         }
 
+        if (target.closest(".delete-btn")) {
+            item.style.opacity = "0";
+            item.style.transform = "translateX(20px)";
+            setTimeout(() => {
+                item.remove();
+                updateCart();
+            }, 300);
+        }
     });
 
-    deleteBtn.addEventListener("click", () => {
-
-        item.remove();
-        updateCart();
-
+    cartContainer.addEventListener("change", (e) => {
+        if (e.target.classList.contains("item-check")) {
+            updateCart();
+        }
     });
 
-    checkbox.addEventListener("change", updateCart);
-
+    updateCart();
 });
-
-updateCart();

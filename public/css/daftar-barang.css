@@ -2,88 +2,104 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: sans-serif;
 }
 
 body {
-    background-color: #D1E9F0;
-    font-family: sans-serif; 
+    background-color: #D1E9F0; /* Tetap pertahankan warna ini */
+    color: #333;
 }
 
+/* Navbar gap filler agar tidak tertutup navbar sticky */
+main {
+    padding: 20px 5%;
+}
+
+/* Search Area */
 .search-container {
     display: flex;
-    justify-content: space-between;
-    padding: 20px 5%;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
 .back-btn {
     background: white;
-    border: 1px solid #ccc;
+    border: 1px solid #000;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: #f0f0f0;
 }
 
 #searchInput {
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
+    padding: 8px 20px;
+    border-radius: 25px;
+    border: 1px solid #000;
     width: 250px;
+    outline: none;
 }
 
-/* Grid Barang */
+/* Grid Barang - Tetap 4 Kolom Sesuai Gambar */
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(4, 250px);
-    gap: 65px;
-    justify-content: center;
-    padding: 20px;
+    grid-template-columns: repeat(4, 1fr); /* Otomatis bagi 4 kolom rata */
+    gap: 40px;
+    justify-items: center;
 }
 
+/* Card Barang */
 .item-card {
-    transition: transform 0.2s;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
+    transition: transform 0.2s ease;
 }
 
 .item-card:hover {
     transform: translateY(-5px);
 }
 
+/* Kotak Gambar Putih - Sesuai Gambar */
 .image-box {
     background: white;
-    border: 1px solid #999;
+    border: 1px solid #000;
     border-radius: 15px;
-    height: 220px; 
+    aspect-ratio: 1 / 0.9; /* Menjaga proporsi kotak tetap konsisten */
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .image-box img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    display: block;
+    object-fit: cover;
 }
 
+/* Tulisan di bawah gambar */
 .item-card h3 {
     font-size: 1.1rem;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
+    font-weight: 600;
 }
 
 .item-card p {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.4;
 }
 
 .price {
-    font-style: italic;
-}
-
-.gambar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    font-weight: 500;
 }
