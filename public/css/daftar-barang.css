@@ -2,53 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: #D1E9F0;
-    color: #333;
+    font-family: sans-serif; 
 }
 
-/* Navbar */
-.navbar {
-    background: white;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    font-family: serif;
-}
-
-.logo span { color: #f1c40f; }
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-}
-
-.nav-links a.active { border-bottom: 2px solid #333; }
-
-.nav-icons {
-    font-size: 1.5rem;
-    display: flex;
-    gap: 15px;
-}
-
-/* Search Bar */
 .search-container {
     display: flex;
     justify-content: space-between;
@@ -74,34 +34,39 @@ body {
 /* Grid Barang */
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 0 5% 50px;
+    grid-template-columns: repeat(4, 250px);
+    gap: 65px;
+    justify-content: center;
+    padding: 20px;
 }
 
 .item-card {
-    background: transparent;
     transition: transform 0.2s;
+    width: 250px;
 }
 
-.item-card:hover { transform: translateY(-5px); }
+.item-card:hover {
+    transform: translateY(-5px);
+}
 
 .image-box {
     background: white;
     border: 1px solid #999;
     border-radius: 15px;
-    height: 200px;
+    height: 220px; 
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; 
     margin-bottom: 10px;
 }
 
 .image-box img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
 }
 
 .item-card h3 {
@@ -111,9 +76,14 @@ body {
 
 .item-card p {
     font-size: 0.85rem;
-    color: #555;
 }
 
-.item-card .price {
+.price {
     font-style: italic;
+}
+
+.gambar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
