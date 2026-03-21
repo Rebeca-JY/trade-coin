@@ -8,8 +8,8 @@
 </head>
 <body>
 
-    <a href="daftar-barang.php" class="back">← Back</a>
-    <?php include '../app/views/component/navbar.php'; ?>
+    <a href="/products" class="back">← Back</a>
+
     <div class="container">
 
         <div class="image">
@@ -42,6 +42,6 @@
         <button class="cart">Add to cart</button>
         <button class="buy">Buy it now</button>
     </div>
-
+    <script src="js/detail.js"></script>
 </body>
 </html>

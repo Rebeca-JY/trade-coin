@@ -29,11 +29,11 @@
         <div class="item-card">
             <div class="image-box">
 
-               <a href="/ProductDetails"><img class="gambar" src="../../../foto/tempatpen.png" alt="Tempat Pen"></a>
+               <a href="/ProductDetails"><img class="gambar" src="../../../foto/tape.jpg" alt="tipe x"></a>
             </div>
-            <h3>Wadah Pen</h3>
+            <h3>tipe x</h3>
             <p>Posted by : Ameng</p>
-            <p class="price">Price : 35 Points</p>
+            <p class="price">Price : 5 Points</p>
         </div>
 
         <div class="item-card">
@@ -50,7 +50,7 @@
                 <img class="gambar" src="../../../foto/penyangga.png" alt="Penyangga">
             </div>
             <h3>Penyangga Buku</h3>
-            <p>Posted by : Aching</p>
+            <p>Posted by : Ahau</p>
             <p class="price">Price : 30 Points</p>
         </div>
 
@@ -77,7 +77,7 @@
                 <img class="gambar"src="../../../foto/pulpen.png" alt="Pulpen">
             </div>
             <h3>Pulpen</h3>
-            <p>Posted by : Acong </p>
+            <p>Posted by : Aphiau </p>
             <p class="price">Price : 5 Points</p>
         </div>
 

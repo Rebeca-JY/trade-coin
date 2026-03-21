@@ -1,133 +1,162 @@
+:root {
+    --bg-main: #f4f7f8;
+    --bg-accent: #bcd3d8;
+    --bg-price: #fce8a4;
+    --btn-buy: #6fa8b3;
+    --text-dark: #333;
+    --border-color: #999;
+    --transition: all 0.3s ease;
+}
+
 body {
-    background-color: #f4f7f8; 
-    font-family: 'Georgia', serif;
+    background-color: var(--bg-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    color: var(--text-dark);
 }
 
-/* TOMBOL BACK */
 .back {
-    display: block;
-    margin: 1.875rem 0 0 3.125rem; 
+    display: inline-block;
+    margin: 20px 0 0 50px;
     text-decoration: none;
     color: black;
-    font-size: 1.25rem; 
     font-weight: bold;
+    transition: var(--transition);
+}
+
+.back:hover {
+    transform: translateX(-5px);
 }
 
 .container {
     display: flex;
-    justify-content: center; 
-    align-items: stretch;   
-    gap: 1.875rem;         
-    padding: 2.5rem 0 5rem 0; 
-    flex: 1;              
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 40px 20px 120px 20px;
+    flex: 1;
 }
 
 .image {
-    flex: 0 0 31.25rem;
+    flex: 1;
+    max-width: 500px;
+    min-width: 300px;
 }
 
 .image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;    
-    border-radius: 1.5625rem; 
-    border: 0.0625rem solid #999; 
-    display: block;
+    height: auto;
+    border-radius: 25px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
-/* BAGIAN DETAIL*/
 .detail {
-    background-color: #bcd3d8;
-    padding: 2.5rem;       
-    border-radius: 1.5625rem;
-    width: 28.125rem;      
-    border: 0.0625rem solid #999;
+    background-color: var(--bg-accent);
+    padding: 40px;
+    border-radius: 25px;
+    flex: 1;
+    max-width: 450px;
+    min-width: 300px;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
 .detail h1 {
     text-align: center;
-    font-size: 2.625rem;   
-    margin-top: 0;
-    margin-bottom: 1.5625rem; 
+    font-size: 2.5rem;
+    margin: 0 0 25px 0;
+    font-family: 'Georgia', serif;
 }
-
 
 .box {
     background: white;
-    padding: 0.75rem 1.25rem; 
-    border-radius: 3.125rem; 
-    margin-bottom: 0.9375rem; 
+    padding: 12px 20px;
+    border-radius: 50px;
+    margin-bottom: 15px;
     font-size: 1rem;
     line-height: 1.4;
+    transition: var(--transition);
 }
 
 .desc {
-    border-radius: 1.25rem; 
-    padding: 0.9375rem 1.5625rem; 
+    border-radius: 20px;
+    padding: 15px 25px;
 }
 
 .price {
-    background: #fce8a4;   
+    background: var(--bg-price);
+    font-weight: bold;
 }
 
-/* BAGIAN PROFIL */
+.box:hover {
+    transform: scale(1.02);
+}
+
 .profile {
-    margin-top: auto;       
+    margin-top: 30px;
 }
 
 .profile h2 {
-    font-size: 1.75rem;     
-    margin-bottom: 0.9375rem; 
+    font-size: 1.5rem;
+    margin-bottom: 15px;
 }
 
 .btn {
-    padding: 0.625rem 1.5625rem;
+    padding: 10px 25px;
     border: none;
-    border-radius: 3.125rem;   
+    border-radius: 50px;
     background: white;
     cursor: pointer;
     font-weight: bold;
-    box-shadow: 0 0.125rem 0.3125rem rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: var(--transition);
 }
 
-/* BOTTOM BAR */
 .bottom-bar {
-    background: #bcd3d8;
-    padding: 1.25rem;       
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--bg-accent);
+    padding: 20px 0;
     display: flex;
     justify-content: center;
-    gap: 1.25rem;        
-    border-top: 0.0625rem solid #999;
-    margin-top: auto;      
+    gap: 20px;
+    border-top: 1px solid var(--border-color);
+    z-index: 100;
 }
 
 .bottom-bar button {
-    padding: 0.75rem 3.75rem; 
-    border-radius: 0.75rem;   
+    padding: 12px 60px;
+    border-radius: 12px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: var(--transition);
+    border: 2px solid black;
 }
 
-.cart {
-    border: 0.125rem solid black; 
+.cart { 
     background: white;
+ }
+
+.buy { 
+    background: var(--btn-buy); 
+    color: white; 
+    border-color: transparent; 
 }
 
-.buy {
-    border: 0.125rem solid black; 
-    background: #6fa8b3;
-    color: black;
-}
-
-/* interaksi saat di hover */
 .cart:hover, .buy:hover, .btn:hover {
-    opacity: 0.8;
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.buy:active, .cart:active {
+    transform: translateY(0);
 }
