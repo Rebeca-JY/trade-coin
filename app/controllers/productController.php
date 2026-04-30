@@ -5,7 +5,7 @@ class ProductController
 {
     public function index()
     {
-        require_once '../app/views/products/index.php';
+        require_once '../app/views/products/ProductList.php';
     }
 }
 
