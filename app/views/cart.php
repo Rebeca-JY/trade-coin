@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeCoin - Shopping Cart</title>
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -16,7 +14,6 @@
 
 <main class="max-w-[1000px] mx-auto px-5 pt-10 pb-[150px]">
 
-    <!-- Cart Item 1 -->
     <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
         <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
 
@@ -43,7 +40,6 @@
         <div class="item-total text-lg font-bold text-[#0f172a] text-right min-w-[130px]">81 Points</div>
     </div>
 
-    <!-- Cart Item 2 -->
     <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
         <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
 
@@ -70,7 +66,6 @@
         <div class="item-total text-lg font-bold text-[#0f172a] text-right min-w-[130px]">99 Points</div>
     </div>
 
-    <!-- Cart Item 3 -->
     <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
         <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
 
@@ -99,7 +94,6 @@
 
 </main>
 
-<!-- Checkout Footer (Floating) -->
 <footer class="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[1000px] bg-white/90 backdrop-blur-md px-10 py-5 flex justify-between items-center rounded-[20px] shadow-xl border border-black/5">
     <h2 class="text-2xl text-[#1e293b] font-medium grand-total">
         Total : <span class="font-extrabold text-black">0 Points</span>
