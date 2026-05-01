@@ -22,9 +22,12 @@ $router->add('GET', '/products', 'ProductController', 'index');
 $router->add('GET', '/ProductDetails', 'ProductDetailController', 'DescView');
 // edit Barang -> ProductController@edit
 // tambah Barang -> ProductController@create
+$router->add('GET', '/products-add', 'ProductCreateController', 'create');
 
 // Login Page
 $router->add('GET', '/login', 'LoginController', 'loginView');
+
+
 
 
 $router->run();
