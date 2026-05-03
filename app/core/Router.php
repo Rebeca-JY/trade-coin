@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Core;
-
-use App\Controllers;    
+namespace App\Core;    
 
 class Router
 {
@@ -35,7 +33,7 @@ class Router
             if (preg_match($pattern, $uri, $matches)) {
                 require_once __DIR__ . '/../controllers/' . $route['controller'] . '.php';
                 array_shift($matches);
-                $controllerClass = 'App\\Controllers\\' . $route['controller'];
+                $controllerClass = 'App\\controllers\\' . $route['controller'];
                 $controller = new $controllerClass();
 
                 $function = $route['function'];

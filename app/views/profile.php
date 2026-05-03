@@ -9,39 +9,40 @@
 <body class="bg-white p-6 md:p-10 font-sans text-gray-800">
 
     <?php
-    $userName = "Cathrine Abigail Sabrina";
-    $userEmail = "Cathrine.002@ski.sch.id";
-    $coins = 53;
+    // Jika data tidak dikirim dari controller, ambil dari database manual
+    if (!isset($user)) {
+        $db = new \App\Core\Database();
+        
+        // Get user (default user ID = 1)
+        $userId = $_GET['id'] ?? 1;
+        $user = $db->selectOne("SELECT id, username, email, coins, profile_image FROM users WHERE id = ?", [$userId]);
+        
+        if (!$user) {
+            die('<h1>User tidak ditemukan</h1>');
+        }
+        
+        // Get purchases
+        $purchases = $db->select("SELECT id, product_title as title, seller_name, product_desc as description, product_image as img FROM purchases WHERE user_id = ? ORDER BY id DESC LIMIT 10", [$userId]);
+        if (!is_array($purchases)) $purchases = [];
+        
+        // Get sales
+        $sales = $db->select("SELECT id, product_title as title, seller_id, product_desc as description, product_image as img FROM sales WHERE seller_id = ? ORDER BY id DESC LIMIT 10", [$userId]);
+        if (!is_array($sales)) $sales = [];
+    }
 
-    $purchases = [
-        [
-            "title" => "The Alchemyst Book Series",
-            "from" => "Elenore Sophie",
-            "desc" => "Full series from the book \"The Alchemyst\" by Michael Scott Eng ver...",
-            "img" => "../../public/foto/book.png"
-        ],
-        [
-            "title" => "Correction Tape",
-            "from" => "James Luther",
-            "desc" => "Good condi, still new, DM for color.",
-            "img" => "../../public/foto/tape.png"
-        ]
-    ];
-
-    $sales = [
-        [
-            "title" => "Drawing Service",
-            "from" => $userName,
-            "desc" => "I draw everything you want, from living things until random things...",
-            "img" => "../../public/foto/scara.png"
-        ],
-        [
-            "title" => "Infographic Service",
-            "from" => $userName,
-            "desc" => "I can make any infographic you want just dm me the detail!",
-            "img" => "../../public/foto/service.png"
-        ]
-    ];
+    // Default empty arrays jika tidak ada data
+    if (!isset($purchases)) $purchases = [];
+    if (!isset($sales)) $sales = [];
+    
+    $userName = $user['username'] ?? 'User';
+    $userEmail = $user['email'] ?? '';
+    $coins = $user['coins'] ?? 0;
+    $profileImage = $user['profile_image'] ?? '/public/foto/default.png';
+    
+    // Fix path foto jika masih relative
+    if (strpos($profileImage, '../../') === 0) {
+        $profileImage = str_replace('../../', '/', $profileImage);
+    }
     ?>
 
     <div class="max-w-5xl mx-auto">
@@ -49,7 +50,7 @@
             <button class="font-bold text-lg">‹ Back</button>
             <div class="flex flex-col items-end gap-2">
                 <div class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1 font-bold">
-                    <img src="../../public/foto/coin.png" alt="coin" class="w-5 h-5">
+                    <img src="/public/foto/coin.png" alt="coin" class="w-5 h-5">
                     <span><?= $coins ?></span>
                 </div>
                 <button class="border border-gray-300 rounded-full px-5 py-1 text-sm bg-white">On sale</button>
@@ -58,7 +59,7 @@
 
         <section class="flex flex-col items-center text-center mb-12">
             <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-100 mb-4">
-                <img src="../../public/foto/cath.png" alt="Profile" class="w-full h-full object-cover">
+                <img src="<?= $profileImage ?>" alt="Profile" class="w-full h-full object-cover">
             </div>
             <h1 class="text-2xl font-serif text-gray-700"><?= $userName ?></h1>
             <p class="text-gray-500 text-sm"><?= $userEmail ?></p>
@@ -72,16 +73,25 @@
                     <a href="#" class="text-[10px] underline text-gray-600">see more</a>
                 </div>
                 <div class="space-y-4">
-                    <?php foreach($purchases as $item): ?>
-                    <div class="bg-white/50 backdrop-blur-sm p-4 rounded-3xl flex gap-4">
-                        <img src="<?= $item['img'] ?>" class="w-20 h-20 rounded-xl object-cover">
-                        <div class="flex flex-col justify-center">
-                            <h3 class="font-bold text-sm"><?= $item['title'] ?></h3>
-                            <p class="text-[10px] text-gray-500">From: <?= $item['from'] ?></p>
-                            <p class="text-[10px] text-gray-700 mt-1 line-clamp-2 italic"><?= $item['desc'] ?></p>
+                    <?php if (count($purchases) > 0): ?>
+                        <?php foreach($purchases as $item): 
+                            $itemImg = $item['img'] ?? '/public/foto/default.png';
+                            if (strpos($itemImg, '../../') === 0) {
+                                $itemImg = str_replace('../../', '/', $itemImg);
+                            }
+                        ?>
+                        <div class="bg-white/50 backdrop-blur-sm p-4 rounded-3xl flex gap-4">
+                            <img src="<?= $itemImg ?>" class="w-20 h-20 rounded-xl object-cover" alt="product">
+                            <div class="flex flex-col justify-center">
+                                <h3 class="font-bold text-sm"><?= $item['title'] ?></h3>
+                                <p class="text-[10px] text-gray-500">From: <?= $item['seller_name'] ?? 'Unknown' ?></p>
+                                <p class="text-[10px] text-gray-700 mt-1 line-clamp-2 italic"><?= $item['description'] ?></p>
+                            </div>
                         </div>
-                    </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-gray-500 text-sm">Tidak ada riwayat pembelian</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -91,16 +101,25 @@
                     <a href="#" class="text-[10px] underline text-gray-600">see more</a>
                 </div>
                 <div class="space-y-4">
-                    <?php foreach($sales as $item): ?>
-                    <div class="bg-white/50 backdrop-blur-sm p-4 rounded-3xl flex gap-4">
-                        <img src="<?= $item['img'] ?>" class="w-20 h-20 rounded-xl object-cover">
-                        <div class="flex flex-col justify-center">
-                            <h3 class="font-bold text-sm"><?= $item['title'] ?></h3>
-                            <p class="text-[10px] text-gray-500">From: <?= $item['from'] ?></p>
-                            <p class="text-[10px] text-gray-700 mt-1 line-clamp-2"><?= $item['desc'] ?></p>
+                    <?php if (count($sales) > 0): ?>
+                        <?php foreach($sales as $item): 
+                            $itemImg = $item['img'] ?? '/public/foto/default.png';
+                            if (strpos($itemImg, '../../') === 0) {
+                                $itemImg = str_replace('../../', '/', $itemImg);
+                            }
+                        ?>
+                        <div class="bg-white/50 backdrop-blur-sm p-4 rounded-3xl flex gap-4">
+                            <img src="<?= $itemImg ?>" class="w-20 h-20 rounded-xl object-cover" alt="service">
+                            <div class="flex flex-col justify-center">
+                                <h3 class="font-bold text-sm"><?= $item['title'] ?></h3>
+                                <p class="text-[10px] text-gray-500">From: <?= $userName ?></p>
+                                <p class="text-[10px] text-gray-700 mt-1 line-clamp-2"><?= $item['description'] ?></p>
+                            </div>
                         </div>
-                    </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-gray-500 text-sm">Tidak ada riwayat penjualan</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
