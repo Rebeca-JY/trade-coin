@@ -9,11 +9,11 @@ $userPoints = 500;
         <img src="/foto/logo.png" alt="TradeCoin Logo" class="h-8 object-contain">
     </div>
 
-    <ul class="hidden md:flex gap-10 items-center list-none">
-        <li><a href="/products" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Search Item & Service</a></li>
-        <li><a href="/products-add" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Sell Item & Service</a></li>
-        <li><a href="#" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Guide</a></li>
-        <li><a href="#" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Contact Us</a></li>
+    <ul class="menu">
+        <li><a href="/products">Search Item & Service</a></li>
+        <li><a href="#">Sell Item & Service</a></li>
+        <li><a href="#">Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
     </ul>
 
     <div class="flex items-center gap-8">
