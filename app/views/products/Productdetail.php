@@ -1,82 +1,120 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeCoin - Detail Barang</title>
+    <title><?= htmlspecialchars($product['nama_produk'] ?? 'Detail Produk') ?> - TradeCoin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        h1 {
-            font-family: 'Georgia', serif;
-        }
-    </style>
 </head>
-
-<body class="bg-[#f4f7f8] text-[#333] min-h-screen flex flex-col">
-
-    <div class="flex justify-start px-[50px] pt-5">
-        <a href="/products"
-            class="inline-block no-underline text-black font-bold transition-all duration-300 hover:-translate-x-1">
-            ← Back
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+    <?php $basePath = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'); ?>
+    <!-- Header -->
+    <header class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm z-50">
+        <a href="<?= ($basePath ?: '') . '/products' ?>" class="flex items-center gap-2 text-slate-700 hover:text-slate-900 font-semibold transition">
+            <i class="fa-solid fa-chevron-left"></i> Back
         </a>
-    </div>
-
-    <main class="container mx-auto flex flex-wrap justify-center items-stretch gap-[30px] px-5 pt-10 pb-[150px] flex-1">
-
-        <div
-            class="flex-1 max-w-[500px] min-w-[300px] bg-white rounded-[25px] border border-[#999] overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
-            <img src="foto/tape.jpg" alt="Produk" class="w-full h-full object-cover">
+        <div class="flex-1 text-center">
+            <h1 class="text-xl font-bold">TradeCoin</h1>
         </div>
+        <div class="w-8"></div>
+    </header>
 
-        <div
-            class="flex-1 max-w-[450px] min-w-[300px] bg-[#bcd3d8] p-10 rounded-[25px] border border-[#999] flex flex-col shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
-            <h1 class="text-center text-[2.5rem] mb-[25px]">Correction Tape</h1>
+    <!-- Main Content -->
+    <main class="flex-1 px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Product Image -->
+                <div class="flex items-center justify-center">
+                    <div class="bg-white rounded-3xl border-2 border-slate-300 overflow-hidden w-full aspect-square flex items-center justify-center">
+                        <?php if (!empty($product['gambar'])): ?>
+                            <img src="/<?= htmlspecialchars($product['gambar']) ?>" alt="<?= htmlspecialchars($product['nama_produk']) ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <div class="text-center text-slate-400">
+                                <i class="fa-solid fa-image text-8xl mb-4"></i>
+                                <p>Tidak ada gambar</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
 
-            <div
-                class="bg-white px-[25px] py-[15px] rounded-[20px] mb-[15px] text-base leading-[1.4] transition-all duration-300 hover:scale-[1.02]">
-                Description: You can ask anything about the product with me.
-                Just open my profile and dm me or just click “Message me!”
-                beside my username below.
-            </div>
+                <!-- Product Details -->
+                <div class="bg-sky-100 rounded-3xl border-2 border-sky-300 p-8 flex flex-col justify-between">
+                    <!-- Title -->
+                    <h1 class="text-4xl font-serif font-bold text-slate-900 mb-6">
+                        <?= htmlspecialchars($product['nama_produk'] ?? '-') ?>
+                    </h1>
 
-            <div
-                class="bg-[#fce8a4] px-5 py-3 rounded-[50px] mb-[15px] text-base font-bold transition-all duration-300 hover:scale-[1.02]">
-                Price : 5 Coins
-            </div>
+                    <!-- Description -->
+                    <div class="bg-white rounded-2xl px-6 py-4 mb-5">
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>Description:</strong> <?= htmlspecialchars($product['deskripsi'] ?? 'Tidak ada deskripsi') ?>
+                        </p>
+                    </div>
 
-            <div
-                class="bg-white px-5 py-3 rounded-[50px] mb-[15px] text-base leading-[1.4] transition-all duration-300 hover:scale-[1.02]">
-                Category : Stationery
-            </div>
-            <div
-                class="bg-white px-5 py-3 rounded-[50px] mb-[15px] text-base leading-[1.4] transition-all duration-300 hover:scale-[1.02]">
-                Material : Plastic
-            </div>
+                    <!-- Price -->
+                    <div class="bg-yellow-200 rounded-full px-6 py-3 mb-4 inline-block">
+                        <p class="font-bold text-lg text-slate-800">
+                            Price : <?= number_format($product['harga'] ?? 0) ?> Coins
+                        </p>
+                    </div>
 
-            <div class="mt-[30px]">
-                <h2 class="text-2xl mb-[15px] font-semibold">Username: James Luther</h2>
-                <button
-                    class="bg-white px-[25px] py-2.5 border-none rounded-[50px] font-bold shadow-[0_2px_5px_rgba(0,0,0,0.1)] transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 text-gray-500">
-                    Message me!
-                </button>
+                    <!-- Category -->
+                    <div class="bg-white rounded-full px-6 py-3 mb-4">
+                        <p class="text-base text-slate-700">
+                            <strong>Category :</strong> Stationery
+                        </p>
+                    </div>
+
+                    <!-- Stock Info -->
+                    <div class="bg-white rounded-full px-6 py-3 mb-6">
+                        <p class="text-base text-slate-700">
+                            <strong>Stock :</strong> <?= htmlspecialchars($product['stock'] ?? 0) ?> items
+                        </p>
+                    </div>
+
+                    <!-- Seller Info -->
+                    <div class="mt-auto pt-6 border-t-2 border-sky-200">
+                        <p class="text-2xl font-serif font-bold text-slate-900 mb-4">
+                            Username: <?= htmlspecialchars($product['nama_penjual'] ?? 'Unknown') ?>
+                        </p>
+                        <button class="bg-white px-6 py-2.5 rounded-full font-bold border-none shadow-md text-slate-600 hover:shadow-lg hover:bg-slate-50 transition cursor-pointer">
+                            <i class="fa-solid fa-envelope mr-2"></i> Message me!
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <div class="fixed bottom-0 w-full bg-[#bcd3d8] py-5 flex justify-end pr-[10%] gap-5 border-t border-[#999] z-[100]">
-        <button
-            class="bg-white px-[60px] py-3 rounded-xl text-base font-bold border-2 border-black transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0">
-            Add to cart
-        </button>
-        <button
-            class="bg-[#6fa8b3] text-white px-[60px] py-3 rounded-xl text-base font-bold border-2 border-transparent transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0">
-            Buy it now
-        </button>
-    </div>
+    <!-- Bottom Action Bar -->
+    <footer class="sticky bottom-0 bg-sky-200 border-t-2 border-sky-300 px-4 py-4">
+        <div class="max-w-4xl mx-auto flex gap-4 justify-end">
+            <form action="<?= ($basePath ?: '') . '/cart/add' ?>" method="POST" class="m-0">
+                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id'] ?? '0') ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="bg-white border-2 border-slate-800 text-slate-900 font-bold px-12 py-3 rounded-2xl hover:bg-slate-50 transition cursor-pointer">
+                    <i class="fa-solid fa-shopping-cart mr-2"></i> Add to cart
+                </button>
+            </form>
+            <button type="button" class="bg-sky-500 text-white font-bold px-12 py-3 rounded-2xl hover:bg-sky-600 transition cursor-pointer" id="buyNowBtn">
+                Buy it now
+            </button>
+        </div>
+    </footer>
 
-    <script src="js/detail.js"></script>
-</body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stock = <?= htmlspecialchars($product['stock'] ?? 0) ?>;
+            const basePath = '<?= $basePath ?: '' ?>';
+            const buyNowBtn = document.getElementById('buyNowBtn');
 
-</html>
+            buyNowBtn.addEventListener('click', function() {
+                if (stock <= 0) {
+                    alert('Produk tidak tersedia');
+                    return;
+                }
+                window.location.href = basePath + '/cart';
+            });
+        });
+    </script>

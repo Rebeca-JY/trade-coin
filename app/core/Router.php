@@ -24,7 +24,7 @@ class Router
         foreach ($this->routes as $route) {
             $pattern = str_replace(
                 '{id}',
-                '([0-9]+)',
+                '([^/]+)',
                 $route['uri']
             );
 
