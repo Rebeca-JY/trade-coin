@@ -76,8 +76,26 @@ if (mysqli_query($conn, $sql_products)) {
     echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
 }
 
-// Step 4: Cek apakah table product sudah ada data
-echo "<h3>4️⃣ Mengecek Data di Tabel 'product'</h3>";
+// Step 4: Buat tabel cart jika belum ada
+echo "<h3>4️⃣ Membuat Tabel 'cart'</h3>";
+$sql_cart = "CREATE TABLE IF NOT EXISTS cart (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL DEFAULT 1,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+if (mysqli_query($conn, $sql_cart)) {
+    echo "✅ Tabel 'cart' siap<br>";
+} else {
+    echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
+}
+
+// Step 5: Cek apakah table product sudah ada data
+echo "<h3>5️⃣ Mengecek Data di Tabel 'product'</h3>";
 $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM product");
 $row = mysqli_fetch_assoc($result);
 $total = $row['total'];

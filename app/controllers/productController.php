@@ -81,13 +81,14 @@ class ProductController
      */
     public function show($id)
     {
-        // Decode ID jika diperlukan
-        $productName = urldecode($id);
+        $decoded = urldecode($id);
 
-        // Ambil detail produk (TANPA ID)
-        $product = $this->productModel->getProductByName($productName);
+        if (ctype_digit($decoded)) {
+            $product = $this->productModel->getProductById((int) $decoded);
+        } else {
+            $product = $this->productModel->getProductByName($decoded);
+        }
 
-        // Jika produk tidak ditemukan
         if (empty($product)) {
             $data = [
                 'error' => 'Produk tidak ditemukan',

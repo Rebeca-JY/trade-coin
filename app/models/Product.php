@@ -2,8 +2,6 @@
 
 namespace App\models;
 
-use App\Core\Database;
-
 /**
  * Product Model - Menangani semua operasi data produk
  
@@ -27,96 +25,169 @@ use App\Core\Database;
 class Product
 {
     private $db;
-    private $table = 'product';
+    private $table = 'products';
+    private $columns = [];
 
     /**
      * Constructor - Initialize Database connection
      */
     public function __construct()
     {
-        $this->db = new Database();
+        $this->db = db();
+        $this->resolveTable();
+        $this->resolveColumns();
     }
 
-    /**
-     * Ambil SEMUA produk (untuk listing di halaman produk)
-     * 
-     * PENTING: Method ini NOT menampilkan ID ke user
-     * Hanya ambil: nama_produk, harga, nama_penjual, deskripsi, gambar, status
-     * 
-     * @param string $status Filter status (default: semua)
-     * @return array Array berisi daftar produk
-     */
+    private function resolveTable()
+    {
+        $tables = $this->db->select("SHOW TABLES LIKE 'products'");
+        if (!empty($tables)) {
+            $this->table = 'products';
+            return;
+        }
+
+        $tables = $this->db->select("SHOW TABLES LIKE 'product'");
+        if (!empty($tables)) {
+            $this->table = 'product';
+            return;
+        }
+
+        die('Tabel produk tidak ditemukan di database.');
+    }
+
+    private function resolveColumns()
+    {
+        $columns = array_column($this->db->select("SHOW COLUMNS FROM {$this->table}"), 'Field');
+
+        $this->columns = [
+            'id' => $this->findColumn(['id'], $columns),
+            'name' => $this->findColumn(['nama_produk', 'product_name', 'product', 'name'], $columns),
+            'price' => $this->findColumn(['harga', 'price'], $columns),
+            'stock' => $this->findColumn(['stock', 'jumlah', 'stok'], $columns),
+            'seller' => $this->findColumn(['nama_penjual', 'seller', 'seller_name'], $columns),
+            'description' => $this->findColumn(['deskripsi', 'product_desc', 'description'], $columns),
+            'image' => $this->findColumn(['gambar', 'product_image', 'image'], $columns),
+            'status' => $this->findColumn(['status', 'is_active'], $columns),
+        ];
+    }
+
+    private function findColumn(array $candidates, array $columns)
+    {
+        foreach ($candidates as $candidate) {
+            if (in_array($candidate, $columns, true)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private function selectFields()
+    {
+        $fields = [
+            $this->columns['id'] ? "{$this->columns['id']} AS id" : "NULL AS id",
+            $this->columns['name'] ? "{$this->columns['name']} AS nama_produk" : "NULL AS nama_produk",
+            $this->columns['price'] ? "{$this->columns['price']} AS harga" : "NULL AS harga",
+            $this->columns['stock'] ? "{$this->columns['stock']} AS stock" : "NULL AS stock",
+            $this->columns['seller'] ? "{$this->columns['seller']} AS nama_penjual" : "NULL AS nama_penjual",
+            $this->columns['description'] ? "{$this->columns['description']} AS deskripsi" : "NULL AS deskripsi",
+            $this->columns['image'] ? "{$this->columns['image']} AS gambar" : "NULL AS gambar",
+            $this->columns['status'] ? "{$this->columns['status']} AS status" : "NULL AS status",
+        ];
+
+        return implode(', ', $fields);
+    }
+
+    private function keyToColumn(string $key)
+    {
+        $mapping = [
+            'nama_produk' => $this->columns['name'],
+            'product_name' => $this->columns['name'],
+            'product' => $this->columns['name'],
+            'name' => $this->columns['name'],
+            'harga' => $this->columns['price'],
+            'price' => $this->columns['price'],
+            'stock' => $this->columns['stock'],
+            'jumlah' => $this->columns['stock'],
+            'stok' => $this->columns['stock'],
+            'nama_penjual' => $this->columns['seller'],
+            'seller' => $this->columns['seller'],
+            'seller_name' => $this->columns['seller'],
+            'deskripsi' => $this->columns['description'],
+            'product_desc' => $this->columns['description'],
+            'description' => $this->columns['description'],
+            'gambar' => $this->columns['image'],
+            'product_image' => $this->columns['image'],
+            'image' => $this->columns['image'],
+            'status' => $this->columns['status'],
+            'is_active' => $this->columns['status'],
+        ];
+
+        return $mapping[$key] ?? null;
+    }
+
+    private function mapDataKeys(array $data)
+    {
+        $mapped = [];
+
+        foreach ($data as $key => $value) {
+            $column = $this->keyToColumn($key);
+            if ($column !== null) {
+                $mapped[$column] = $value;
+            }
+        }
+
+        return $mapped;
+    }
+
     public function getAllProducts($status = '')
     {
-        $query = "SELECT id, product_name as nama_produk, price as harga, seller as nama_penjual 
-                  FROM {$this->table}";
-
+        $query = "SELECT {$this->selectFields()} FROM {$this->table}";
         return $this->db->select($query);
     }
 
-    /**
-     * Ambil SATU produk berdasarkan nama produk (untuk detail page)
-     * Kenapa pakai nama_produk? Karena ID tidak boleh di-expose ke user.
-     * Nama produk diasumsikan unik atau digabung dengan penjual.
-     * 
-     * Alternatif: Bisa juga pakai kombinasi nama_produk + nama_penjual
-     * 
-     * @param string $namaProduk Nama produk yang dicari
-     * @return array Data produk (tanpa ID), atau array kosong jika tidak ada
-     */
     public function getProductByName($namaProduk)
     {
-        $query = "SELECT id, product_name as nama_produk, price as harga, seller as nama_penjual 
-                  FROM {$this->table} 
-                  WHERE product_name = ?";
-        
+        $nameColumn = $this->columns['name'];
+        if (!$nameColumn) {
+            return [];
+        }
+
+        $query = "SELECT {$this->selectFields()} FROM {$this->table} WHERE {$nameColumn} = ?";
         return $this->db->selectOne($query, [$namaProduk]);
     }
 
-    /**
-     * Ambil produk berdasarkan ID (Internal use - untuk admin/backend operations)
-     * 
-     * Method ini HANYA digunakan di backend (Controller)
-     * Ketika ada operasi admin seperti edit/delete
-     * 
-     * @param int $id ID produk
-     * @return array Data produk lengkap termasuk ID
-     */
     public function getProductById($id)
     {
-        $query = "SELECT id, product_name as nama_produk, price as harga, seller as nama_penjual FROM {$this->table} WHERE id = ?";
+        $idColumn = $this->columns['id'];
+        if (!$idColumn) {
+            return [];
+        }
+
+        $query = "SELECT {$this->selectFields()} FROM {$this->table} WHERE {$idColumn} = ?";
         return $this->db->selectOne($query, [$id]);
     }
 
-    /**
-     * Ambil produk berdasarkan nama penjual
-     * Gunakan untuk menampilkan semua produk dari satu penjual
-     * 
-     * @param string $namaPenjual Nama penjual
-     * @return array Array berisi semua produk dari penjual tersebut
-     */
     public function getProductsByPenjual($namaPenjual)
     {
-        $query = "SELECT id, product_name as nama_produk, price as harga, seller as nama_penjual 
-                  FROM {$this->table} 
-                  WHERE seller = ?";
-        
+        $sellerColumn = $this->columns['seller'];
+        if (!$sellerColumn) {
+            return [];
+        }
+
+        $query = "SELECT {$this->selectFields()} FROM {$this->table} WHERE {$sellerColumn} = ?";
         return $this->db->select($query, [$namaPenjual]);
     }
 
-    /**
-     * Cari produk berdasarkan keyword
-  
-     */
     public function searchProducts($keyword)
     {
-        $keyword = "%{$keyword}%"; // Tambah wildcard untuk LIKE
-        
-        $query = "SELECT id, product_name as nama_produk, price as harga, seller as nama_penjual 
-                  FROM {$this->table} 
-                  WHERE product_name LIKE ?
-                  ORDER BY id DESC";
-        
+        $nameColumn = $this->columns['name'];
+        if (!$nameColumn) {
+            return [];
+        }
+
+        $keyword = "%{$keyword}%";
+        $query = "SELECT {$this->selectFields()} FROM {$this->table} WHERE {$nameColumn} LIKE ? ORDER BY {$this->columns['id']} DESC";
         return $this->db->select($query, [$keyword]);
     }
 
@@ -141,23 +212,35 @@ class Product
      */
     public function createProduct($data)
     {
-        // Validasi field wajib
-        $required = ['nama_produk', 'harga', 'nama_penjual'];
+        $mappedData = $this->mapDataKeys($data);
+
+        // Hapus kolom ID karena AUTO_INCREMENT
+        $idColumn = $this->columns['id'];
+        if ($idColumn && isset($mappedData[$idColumn])) {
+            unset($mappedData[$idColumn]);
+        }
+
+        // Validasi field wajib berdasarkan mapping schema
+        $required = ['nama_produk', 'harga'];
+        if ($this->columns['stock'] !== null) {
+            $required[] = 'stock';
+        }
+        if ($this->columns['seller'] !== null) {
+            $required[] = 'nama_penjual';
+        }
+
         foreach ($required as $field) {
-            if (!isset($data[$field]) || empty($data[$field])) {
+            $column = $this->keyToColumn($field);
+            if ($column === null || !isset($mappedData[$column]) || $mappedData[$column] === '') {
                 return false;
             }
         }
 
-        // Set default values
-        if (!isset($data['status'])) {
-            $data['status'] = 'active';
-        }
-        if (!isset($data['created_at'])) {
-            $data['created_at'] = date('Y-m-d H:i:s');
+        if ($this->columns['status'] !== null && !isset($mappedData[$this->columns['status']])) {
+            $mappedData[$this->columns['status']] = 'active';
         }
 
-        return $this->db->insert($this->table, $data);
+        return $this->db->insert($this->table, $mappedData);
     }
 
     /**
@@ -178,7 +261,10 @@ class Product
      */
     public function updateProduct($id, $data)
     {
-        return $this->db->update($this->table, $data, ['id' => $id]);
+        $mappedData = $this->mapDataKeys($data);
+        $idColumn = $this->columns['id'] ?? 'id';
+
+        return $this->db->update($this->table, $mappedData, [$idColumn => $id]);
     }
 
     /**

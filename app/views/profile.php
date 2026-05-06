@@ -11,7 +11,10 @@
     <?php
     // Jika data tidak dikirim dari controller, ambil dari database manual
     if (!isset($user)) {
-        $db = new \App\Core\Database();
+        if (!function_exists('db')) {
+            require_once __DIR__ . '/../config/database.php';
+        }
+        $db = db();
         
         // Get user (default user ID = 1)
         $userId = $_GET['id'] ?? 1;
