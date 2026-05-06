@@ -10,101 +10,74 @@
 
 <body class="bg-[#f8fafc] text-[#334155] min-h-screen">
 
-<?php include '../app/views/component/navbar.php'; ?>
+<?php include __DIR__ . '/component/navbar.php'; ?>
 
 <main class="max-w-[1000px] mx-auto px-5 pt-10 pb-[150px]">
-
-    <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-        <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
-
-        <div class="product-info flex items-center gap-5 flex-1">
-            <img src="./foto/pulpen.png" alt="Pulpen Elitis" class="w-[100px] h-[100px] object-cover rounded-xl bg-[#f1f5f9]">
-
-            <div class="product-details">
-                <h3 class="text-lg font-semibold text-[#1e293b] mb-1">Pulpen Elitis</h3>
-                <p class="shop-name text-[#64748b] text-sm flex items-center gap-1.5">toko bahagia</p>
-                <p class="unit-price text-[#94a3b8] text-sm mt-1">27 Points</p>
-
-                <div class="controls flex items-center gap-4 mt-4">
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">-</button>
-                    <span class="qty-num text-base font-semibold min-w-[20px] text-center">3</span>
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">+</button>
-                    
-                    <button class="delete-btn ml-2.5 w-8 h-8 rounded-lg bg-[#fff1f2] text-[#e11d48] flex items-center justify-center transition-all hover:bg-[#ffe4e6] hover:text-[#be123c]">
-                        <i class="fas fa-trash text-sm"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="item-total text-lg font-bold text-[#0f172a] text-right min-w-[130px]">81 Points</div>
+    <div class="mb-6 flex flex-col gap-2">
+        <h1 class="text-3xl font-semibold text-[#0f172a]">Shopping Cart</h1>
+        <p class="text-sm text-[#64748b]">Keranjang kamu, total poin, dan kontrol jumlah produk.</p>
     </div>
 
-    <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-        <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
-
-        <div class="product-info flex items-center gap-5 flex-1">
-            <img src="./foto/penpink.png" alt="Pulpen Clingy" class="w-[100px] h-[100px] object-cover rounded-xl bg-[#f1f5f9]">
-
-            <div class="product-details">
-                <h3 class="text-lg font-semibold text-[#1e293b] mb-1">Pulpen Clingy</h3>
-                <p class="shop-name text-[#64748b] text-sm flex items-center gap-1.5">toko barbie</p>
-                <p class="unit-price text-[#94a3b8] text-sm mt-1">99 Points</p>
-
-                <div class="controls flex items-center gap-4 mt-4">
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">-</button>
-                    <span class="qty-num text-base font-semibold min-w-[20px] text-center">1</span>
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">+</button>
-                    
-                    <button class="delete-btn ml-2.5 w-8 h-8 rounded-lg bg-[#fff1f2] text-[#e11d48] flex items-center justify-center transition-all hover:bg-[#ffe4e6] hover:text-[#be123c]">
-                        <i class="fas fa-trash text-sm"></i>
-                    </button>
-                </div>
-            </div>
+    <?php if (empty($cartItems)): ?>
+        <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
+            <h2 class="text-2xl font-semibold text-[#0f172a] mb-3">Keranjang kosong</h2>
+            <p class="text-sm text-[#64748b]">Belum ada produk di keranjang. Buka halaman produk dan tambahkan barang.</p>
+            <a href="/products" class="inline-flex mt-5 px-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-[#111]">Lihat Produk</a>
         </div>
-
-        <div class="item-total text-lg font-bold text-[#0f172a] text-right min-w-[130px]">99 Points</div>
-    </div>
-
-    <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-2xl mb-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-        <input type="checkbox" class="item-check w-5 h-5 cursor-pointer accent-black" checked>
-
-        <div class="product-info flex items-center gap-5 flex-1">
-            <img src="./foto/cutter.png" alt="Cater Cat" class="w-[100px] h-[100px] object-cover rounded-xl bg-[#f1f5f9]">
-
-            <div class="product-details">
-                <h3 class="text-lg font-semibold text-[#1e293b] mb-1">Cater Cat</h3>
-                <p class="shop-name text-[#64748b] text-sm flex items-center gap-1.5">toko kucing</p>
-                <p class="unit-price text-[#94a3b8] text-sm mt-1">20 Points</p>
-
-                <div class="controls flex items-center gap-4 mt-4">
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">-</button>
-                    <span class="qty-num text-base font-semibold min-w-[20px] text-center">1</span>
-                    <button class="qty-btn w-8 h-8 rounded-lg border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center transition-all hover:bg-[#f1f5f9] hover:border-[#cbd5e1] active:scale-90">+</button>
-                    
-                    <button class="delete-btn ml-2.5 w-8 h-8 rounded-lg bg-[#fff1f2] text-[#e11d48] flex items-center justify-center transition-all hover:bg-[#ffe4e6] hover:text-[#be123c]">
-                        <i class="fas fa-trash text-sm"></i>
-                    </button>
+    <?php else: ?>
+        <?php foreach ($cartItems as $item): ?>
+            <div class="cart-item group flex items-center gap-5 bg-white p-5 rounded-[30px] mb-5 shadow-[0_15px_40px_rgba(15,23,42,0.08)] border border-[#f0f4f8] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
+                <div class="flex items-start">
+                    <span class="flex items-center justify-center w-12 h-12 rounded-3xl bg-black text-white shadow-lg">
+                        <i class="fas fa-check"></i>
+                    </span>
                 </div>
+
+                <div class="product-info flex items-center gap-5 flex-1">
+                    <img src="<?= htmlspecialchars($item['gambar'] ?: '/foto/default.png') ?>" alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="w-[150px] h-[120px] object-cover rounded-[25px] border border-[#ebeff3] bg-[#f8fafc] p-2">
+
+                    <div class="product-details flex-1">
+                        <h3 class="text-2xl font-semibold text-[#0f172a] mb-1"><?= htmlspecialchars($item['nama_produk']) ?></h3>
+                        <p class="shop-name text-[#64748b] text-sm mb-2"><?= htmlspecialchars($item['nama_penjual']) ?></p>
+                        <p class="unit-price text-[#64748b] text-sm mb-4"><?= number_format($item['harga']) ?> Points</p>
+
+                        <div class="controls flex items-center gap-3">
+                            <form method="POST" action="/cart/update" class="flex items-center gap-2">
+                                <input type="hidden" name="cart_item_id" value="<?= $item['cart_item_id'] ?>">
+                                <input type="hidden" name="quantity" value="<?= max(1, $item['quantity'] - 1) ?>">
+                                <button type="submit" class="qty-btn w-9 h-9 rounded-xl border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center hover:bg-[#f1f5f9]">-</button>
+                            </form>
+
+                            <span class="qty-num text-base font-semibold min-w-[30px] text-center"><?= $item['quantity'] ?></span>
+
+                            <form method="POST" action="/cart/update" class="flex items-center gap-2">
+                                <input type="hidden" name="cart_item_id" value="<?= $item['cart_item_id'] ?>">
+                                <input type="hidden" name="quantity" value="<?= $item['quantity'] + 1 ?>">
+                                <button type="submit" class="qty-btn w-9 h-9 rounded-xl border border-[#e2e8f0] bg-white text-[#0f172a] flex items-center justify-center hover:bg-[#f1f5f9]">+</button>
+                            </form>
+
+                            <form method="POST" action="/cart/remove">
+                                <input type="hidden" name="cart_item_id" value="<?= $item['cart_item_id'] ?>">
+                                <button type="submit" class="delete-btn w-10 h-10 rounded-xl bg-[#ffe6e9] text-[#dc2626] flex items-center justify-center hover:bg-[#fecdd3] hover:text-[#b91c1c]">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-total text-2xl font-bold text-[#0f172a] text-right min-w-[140px]"><?= number_format($item['harga'] * $item['quantity']) ?> Points</div>
             </div>
-        </div>
-
-        <div class="item-total text-lg font-bold text-[#0f172a] text-right min-w-[130px]">20 Points</div>
-    </div>
-
+        <?php endforeach; ?>
+    <?php endif; ?>
 </main>
 
-<footer class="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[1000px] bg-white/90 backdrop-blur-md px-10 py-5 flex justify-between items-center rounded-[20px] shadow-xl border border-black/5">
-    <h2 class="text-2xl text-[#1e293b] font-medium grand-total">
-        Total : <span class="font-extrabold text-black">0 Points</span>
-    </h2>
-
-    <button class="btn-checkout bg-black text-white px-[45px] py-3.5 rounded-xl text-base font-semibold transition-all duration-300 hover:bg-[#333] hover:scale-[1.03] active:scale-95">
-        Check out
-    </button>
+<footer class="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[1000px] bg-white px-10 py-5 flex items-center justify-between rounded-[30px] shadow-[0_25px_70px_rgba(15,23,42,0.1)] border border-[#e5e7eb]">
+    <div>
+        <p class="text-sm text-[#64748b]">Total : <span class="font-semibold text-[#0f172a]"><?= number_format($cartTotalPoints) ?> Coins</span></p>
+    </div>
+    <button class="btn-checkout bg-black text-white px-10 py-4 rounded-[25px] text-base font-semibold transition-all duration-300 hover:bg-[#111] hover:scale-[1.02] active:scale-95">Check out</button>
 </footer>
-
-<script src="js/cart.js"></script>
 
 </body>
 </html>

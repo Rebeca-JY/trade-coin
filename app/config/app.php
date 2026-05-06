@@ -1,37 +1,20 @@
 <?php
-session_start();
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "tradecoin";
+// Konfigurasi Database
+$host = 'localhost';
+$db   = 'tradecoin'; // Pastikan sama dengan nama database di HeidiSQL
+$user = 'root';      // Default user Laragon
+$pass = '';          // Default password Laragon kosong
 
-$conn = mysqli_connect($host, $user, $pass, $db);
-
-if (!$conn) {
-    die("Koneksi ke database gagal: " . mysqli_connect_error());
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $login_id = $_POST['login_id'];
-    $password = $_POST['password'];
-
-
-    $sql = "SELECT * FROM users WHERE username = '$login_id' OR email = '$login_id'";
-    $result = mysqli_query($conn, $sql);
-    $user = mysqli_fetch_assoc($result);
-
-    if ($user) {
-
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-              
-            header("Location: dashboard.php"); 
-            exit();
-        } else {
-            $error = "Password salah!";
-        }
-    } else {
-        $error = "Username atau Email tidak ditemukan!";
-    }
+try {
+    // Membuat koneksi menggunakan PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
+    
+    // Mengatur mode error agar muncul jika ada masalah
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Opsional: echo "Koneksi berhasil!"; 
+} catch (PDOException $e) {
+    // Jika koneksi gagal, tampilkan pesan error
+    die("Koneksi gagal: " . $e->getMessage());
 }
 ?>

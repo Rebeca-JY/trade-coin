@@ -9,11 +9,11 @@ $userPoints = 500;
         <img src="/foto/logo.png" alt="TradeCoin Logo" class="h-8 object-contain">
     </div>
 
-    <ul class="hidden md:flex gap-10 items-center list-none">
-        <li><a href="/products" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Search Item & Service</a></li>
-        <li><a href="/products-add" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Sell Item & Service</a></li>
-        <li><a href="#" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Guide</a></li>
-        <li><a href="#" class="text-[#333] text-sm font-medium no-underline transition-colors hover:text-[#567f89]">Contact Us</a></li>
+    <ul class="flex items-center gap-8 list-none m-0 p-0">
+        <li><a href="/products" class="text-gray-700 hover:text-black font-medium transition-colors">Search Item & Service</a></li>
+        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Sell Item & Service</a></li>
+        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Guide</a></li>
+        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Contact Us</a></li>
     </ul>
 
     <div class="flex items-center gap-8">
@@ -32,11 +32,11 @@ $userPoints = 500;
         </a>
 
         <div class="relative inline-block">
-            <div id="tcUserIcon" class="text-3xl text-[#333] cursor-pointer transition-all duration-200">
+            <div id="tcUserIcon" class="text-3xl text-[#333] cursor-pointer transition-all duration-200 hover:text-gray-600">
                 <i class="fas fa-user-circle"></i>
             </div>
             
-            <div id="tcDropdown" class="hidden absolute right-0 mt-4 w-[220px] bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden py-2 transition-all opacity-0 scale-95 origin-top-right">
+            <div id="tcDropdown" class="absolute right-0 mt-4 w-[220px] bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden py-2 transition-all duration-200 opacity-0 scale-95 origin-top-right pointer-events-none">
                 <p class="px-5 py-3 text-sm text-[#333] bg-gray-50 m-0 border-b border-gray-100">Points : <b class="text-[#567f89]"><?= number_format($userPoints) ?></b></p>
                 <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-regular fa-user w-5 text-center text-gray-500"></i> Account Profile</a>
                 <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-gear w-5 text-center text-gray-500"></i> Account Setting</a>
@@ -52,44 +52,25 @@ $userPoints = 500;
 document.addEventListener("DOMContentLoaded", () => {
     const userIcon = document.getElementById("tcUserIcon");
     const dropdown = document.getElementById("tcDropdown");
-    const iconLinks = document.querySelectorAll(".icon-link");
 
     userIcon.addEventListener("click", (e) => {
         e.stopPropagation();
-        const isHidden = dropdown.classList.contains("hidden");
+        const isOpen = !dropdown.classList.contains("opacity-0");
         
-        if (!isHidden) {
-            dropdown.classList.add("hidden", "opacity-0", "scale-95");
-            dropdown.classList.remove("block", "opacity-100", "scale-100");
-            userIcon.style.transform = "scale(1.1)";
+        if (isOpen) {
+            dropdown.classList.add("opacity-0", "scale-95", "pointer-events-none");
+            dropdown.classList.remove("opacity-100", "scale-100");
         } else {
-            dropdown.classList.remove("hidden", "opacity-0", "scale-95");
-            dropdown.classList.add("block", "opacity-100", "scale-100");
-            userIcon.style.transform = "scale(0.9)";
+            dropdown.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+            dropdown.classList.add("opacity-100", "scale-100");
         }
-        
-        setTimeout(() => {
-            userIcon.style.transform = "";
-        }, 200);
     });
 
     document.addEventListener("click", (e) => {
         if (!dropdown.contains(e.target) && !userIcon.contains(e.target)) {
-            dropdown.classList.add("hidden", "opacity-0", "scale-95");
-            dropdown.classList.remove("block", "opacity-100", "scale-100");
+            dropdown.classList.add("opacity-0", "scale-95", "pointer-events-none");
+            dropdown.classList.remove("opacity-100", "scale-100");
         }
-    });
-
-    iconLinks.forEach(icon => {
-        icon.addEventListener("mousedown", () => {
-            icon.style.transform = "scale(0.85)";
-        });
-        icon.addEventListener("mouseup", () => {
-            icon.style.transform = "translateY(-2px) scale(1.1)";
-        });
-        icon.addEventListener("mouseleave", () => {
-            icon.style.transform = "";
-        });
     });
 });
 </script>

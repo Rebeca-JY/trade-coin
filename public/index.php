@@ -1,6 +1,26 @@
 <?php
 
+// Simple Autoloader - Manual require untuk setiap file yang dibutuhkan
+spl_autoload_register(function ($class) {
+    // Konversi namespace ke file path
+    // App\Core\Router -> ../app/core/Router.php
+    $prefix = 'App\\';
+    $len = strlen($prefix);
+    
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+    
+    $relative_class = substr($class, $len);
+    $file = __DIR__ . '/../app/' . str_replace('\\', '/', strtolower($relative_class)) . '.php';
+    
+    if (file_exists($file)) {
+        require_once $file;
+    }
+});
+
 require_once '../app/core/Router.php';
+require_once __DIR__ . '/../app/config/database.php';
 use App\Core\Router;
 
 $router = new Router();
@@ -16,16 +36,56 @@ $router->add('GET', '/cart', 'CartController', 'cartView');
 
 // Daftar Barang
 $router->add('GET', '/products', 'ProductController', 'index');
+$router->add('GET', '/products/{id}', 'ProductController', 'show');
 
 
 // Detail Barang -> ProductController@show
-$router->add('GET', '/ProductDetails', 'ProductDetailController', 'DescView');
+// NOTE: ProductDetailController tidak ada, gunakan route produk detail yang sudah ada di /products/{id}
+// $router->add('GET', '/ProductDetails', 'ProductDetailController', 'DescView');
 // edit Barang -> ProductController@edit
-// tambah Barang -> ProductController@create
+// tambah Barang -> ProductController@create    
 $router->add('GET', '/products-add', 'ProductCreateController', 'create');
 
 // Login Page
 $router->add('GET', '/login', 'LoginController', 'loginView');
+$router->add('POST', '/login', 'LoginController', 'loginSubmit');
+
+// Cart actions
+$router->add('GET', '/cart', 'CartController', 'cartView');
+$router->add('POST', '/cart/add', 'CartController', 'addItem');
+$router->add('POST', '/cart/update', 'CartController', 'updateItem');
+$router->add('POST', '/cart/remove', 'CartController', 'removeItem');
+
+// Profile Page
+$router->add('GET', '/profile', 'ProfileController', 'index');
+$router->add('GET', '/profile/{id}', 'ProfileController', 'index');
+
+
+
+
+
+// Admin pages
+
+// Admin Products
+$router->add('GET', '/admin/products', 'AdminProductController', 'index'); // Daftar produk di admin
+$router->add('GET', '/admin/products/create', 'AdminProductController', 'create'); // Form tambah produk di admin
+$router->add('POST', '/admin/products/create', 'AdminProductController', 'create'); // Proses tambah produk
+$router->add('GET', '/admin/products/{id}/edit', 'AdminProductController', 'edit'); // Form edit produk di admin
+$router->add('POST', '/admin/products/{id}/edit', 'AdminProductController', 'edit'); // Proses edit produk
+$router->add('POST', '/admin/products/{id}/delete', 'AdminProductController', 'delete'); // Hapus produk di admin
+$router->add('GET', '/admin/products/{id}', 'AdminProductController', 'show'); // detail produk di admin
+
+// Admin Users - CRUD Operations
+$router->add('GET', '/admin/users', 'AdminUserController', 'index'); // Daftar semua users
+$router->add('GET', '/admin/users/create', 'AdminUserController', 'create'); // Form tambah user baru
+$router->add('POST', '/admin/users/create', 'AdminUserController', 'create'); // Proses tambah user
+$router->add('GET', '/admin/users/show', 'AdminUserController', 'show'); // Lihat detail user
+$router->add('GET', '/admin/users/edit', 'AdminUserController', 'edit'); // Form edit user
+$router->add('POST', '/admin/users/edit', 'AdminUserController', 'edit'); // Proses edit user
+$router->add('GET', '/admin/users/delete', 'AdminUserController', 'delete'); // Form delete user
+$router->add('POST', '/admin/users/delete', 'AdminUserController', 'delete'); // Proses delete user
+
+
 
 
 

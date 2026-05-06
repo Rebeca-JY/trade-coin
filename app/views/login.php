@@ -10,6 +10,7 @@
         body { font-family: 'Crimson Pro', serif; }
     </style>
 </head>
+
 <body class="bg-[#567f89] min-h-screen flex items-center justify-center p-4">
 
     <div class="bg-[#dce6e9] w-full max-w-[400px] rounded-[30px] overflow-hidden shadow-2xl">
@@ -32,13 +33,14 @@
             <?php endif; ?>
 
             <!-- Card Body Start -->
-            <form action="" method="POST" class="space-y-8">
+            <form action="/login" method="POST" class="space-y-8">
                 
                 <div class="relative">
                     <label class="block font-bold text-[#3a5a64] mb-1" for="login_id">Email/Username</label>
                     <input type="text" 
                         id="login_id"
                         name="login_id"
+                        value="<?= htmlspecialchars($loginId ?? '') ?>"
                         placeholder="Enter your email/username" 
                         class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64] placeholder-[#567f89]"
                         required>
