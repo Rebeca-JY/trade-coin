@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;    
+namespace App\Core;
 
 class Router
 {
@@ -22,6 +22,12 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         foreach ($this->routes as $route) {
+
+            // CEK METHOD GET / POST
+            if ($method !== $route['method']) {
+                continue;
+            }
+
             $pattern = str_replace(
                 '{id}',
                 '([^/]+)',
@@ -31,19 +37,26 @@ class Router
             $pattern = '#^' . $pattern . '$#';
 
             if (preg_match($pattern, $uri, $matches)) {
+
                 require_once __DIR__ . '/../controllers/' . $route['controller'] . '.php';
+
                 array_shift($matches);
+
                 $controllerClass = 'App\\controllers\\' . $route['controller'];
+
                 $controller = new $controllerClass();
 
                 $function = $route['function'];
+
                 call_user_func_array([$controller, $function], $matches);
+
                 return;
             }
         }
 
         http_response_code(404);
-        echo '<h1>404 - Page Not Found</h1>';
-    }
 
+        echo '<h1>404 - Page Not Found</h1>';
+
+    }
 }
