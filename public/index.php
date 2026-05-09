@@ -47,6 +47,10 @@ $router->add('GET', '/products/{id}', 'ProductController', 'show');
 $router->add('GET', '/products-add', 'ProductCreateController', 'create');
 $router->add('POST', '/products-add', 'ProductCreateController', 'create');
 
+// Sellpage
+$router->add('GET', '/sellpage', 'SellPageController', 'index');
+$router->add('POST', '/sellpage', 'SellPageController', 'submit');
+
 // Login Page
 $router->add('GET', '/login', 'LoginController', 'loginView');
 $router->add('POST', '/login', 'LoginController', 'loginSubmit');

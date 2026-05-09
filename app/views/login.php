@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
                         type="text"
                         id="login_id"
                         name="login_id"
+
                         value="<?= htmlspecialchars($loginId) ?>"
                         placeholder="Enter your email/username"
                         class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64] placeholder-[#567f89]/50"
@@ -74,8 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="Enter your Password"
-                        class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64] placeholder-[#567f89]/50"
+                        placeholder="Enter your Password" 
+                        class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64]"
+
                         required>
                 </div>
 

@@ -1,0 +1,13 @@
+{
+    "name": "rebeca-jy/trade-coin",
+    "description": "Trade Coin Application",
+    "type": "project",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
