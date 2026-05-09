@@ -74,8 +74,11 @@
                                         case 'deduct':
                                             echo 'bg-red-100 text-red-800';
                                             break;
-                                        default:
+                                        case 'set':
                                             echo 'bg-blue-100 text-blue-800';
+                                            break;
+                                        default:
+                                            echo 'bg-gray-100 text-gray-800';
                                     }
                                     ?>
                                 ">
@@ -83,11 +86,25 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right font-bold
-                                <?php 
-                                echo $record['action'] === 'add' ? 'text-green-600' : 'text-red-600';
+                                <?php
+                                if ($record['action'] === 'add') {
+                                    echo 'text-green-600';
+                                } elseif ($record['action'] === 'deduct') {
+                                    echo 'text-red-600';
+                                } else {
+                                    echo 'text-blue-600';
+                                }
                                 ?>
                             ">
-                                <?php echo ($record['action'] === 'add' ? '+' : '-'); ?><?php echo number_format($record['amount']); ?>
+                                <?php
+                                if ($record['action'] === 'add') {
+                                    echo '+' . number_format($record['amount']);
+                                } elseif ($record['action'] === 'deduct') {
+                                    echo '-' . number_format($record['amount']);
+                                } else {
+                                    echo '→ ' . number_format($record['amount']);
+                                }
+                                ?>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
                                 <?php echo htmlspecialchars($record['reason']); ?>

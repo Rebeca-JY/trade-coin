@@ -57,6 +57,38 @@ if (mysqli_query($conn, $sql_users)) {
     echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
 }
 
+// Step 2b: Poin user & riwayat (admin dashboard)
+echo "<h3>2️⃣b Membuat Tabel 'user_points' & 'point_history'</h3>";
+$sql_user_points = "CREATE TABLE IF NOT EXISTS user_points (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL UNIQUE,
+    total_points INT NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+if (mysqli_query($conn, $sql_user_points)) {
+    echo "✅ Tabel 'user_points' siap<br>";
+} else {
+    echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
+}
+
+$sql_point_history = "CREATE TABLE IF NOT EXISTS point_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    action ENUM('add','deduct','set') NOT NULL,
+    amount INT NOT NULL,
+    reason VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_point_history_user (user_id),
+    INDEX idx_point_history_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+if (mysqli_query($conn, $sql_point_history)) {
+    echo "✅ Tabel 'point_history' siap<br>";
+} else {
+    echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
+}
+
 // Step 3: Buat tabel products
 echo "<h3>3️⃣ Membuat Tabel 'product'</h3>";
 $sql_products = "CREATE TABLE IF NOT EXISTS product (

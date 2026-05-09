@@ -9,28 +9,9 @@
 <body class="bg-white p-6 md:p-10 font-sans text-gray-800">
 
     <?php
-    // Jika data tidak dikirim dari controller, ambil dari database manual
     if (!isset($user)) {
-        if (!function_exists('db')) {
-            require_once __DIR__ . '/../config/database.php';
-        }
-        $db = db();
-        
-        // Get user (default user ID = 1)
-        $userId = $_GET['id'] ?? 1;
-        $user = $db->selectOne("SELECT id, username, email, coins, profile_image FROM users WHERE id = ?", [$userId]);
-        
-        if (!$user) {
-            die('<h1>User tidak ditemukan</h1>');
-        }
-        
-        // Get purchases
-        $purchases = $db->select("SELECT id, product_title as title, seller_name, product_desc as description, product_image as img FROM purchases WHERE user_id = ? ORDER BY id DESC LIMIT 10", [$userId]);
-        if (!is_array($purchases)) $purchases = [];
-        
-        // Get sales
-        $sales = $db->select("SELECT id, product_title as title, seller_id, product_desc as description, product_image as img FROM sales WHERE seller_id = ? ORDER BY id DESC LIMIT 10", [$userId]);
-        if (!is_array($sales)) $sales = [];
+        echo '<p class="text-center text-red-600 mt-8">Silakan <a href="/login" class="underline">login</a> untuk melihat profil.</p>';
+        exit;
     }
 
     // Default empty arrays jika tidak ada data
@@ -50,10 +31,10 @@
 
     <div class="max-w-5xl mx-auto">
         <header class="flex justify-between items-start mb-8">
-            <button class="font-bold text-lg">‹ Back</button>
+            <a href="/products"><button class="font-bold text-lg">‹ Back</button></a>
             <div class="flex flex-col items-end gap-2">
                 <div class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1 font-bold">
-                    <img src="/public/foto/coin.png" alt="coin" class="w-5 h-5">
+                    <img src="/public/foto/Coin 1.png" alt="coin" class="w-5 h-5">
                     <span><?= $coins ?></span>
                 </div>
                 <button class="border border-gray-300 rounded-full px-5 py-1 text-sm bg-white">On sale</button>

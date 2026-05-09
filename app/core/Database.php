@@ -18,6 +18,19 @@ class Database
         return self::$instance;
     }
 
+    /**
+     * PDO mentah — dipakai model yang query langsung (mis. UserPoint).
+     */
+    public function getPdo(): PDO
+    {
+        return $this->conn;
+    }
+
+    public static function getConnection(): PDO
+    {
+        return self::getInstance()->getPdo();
+    }
+
     public function __construct($host, $user, $pass, $db)
     {
         $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
