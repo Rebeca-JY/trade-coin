@@ -77,7 +77,10 @@
                                 <i class="fas fa-star text-yellow-500 mr-1"></i><?php echo number_format($user['total_points']); ?>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-600">
-                                <?php echo date('d M Y H:i', strtotime($user['last_updated'])); ?>
+                                <?php
+                                $lastUpdated = $user['last_updated'] ?? null;
+                                echo $lastUpdated ? date('d M Y H:i', strtotime($lastUpdated)) : '-';
+                                ?>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex justify-center gap-2">
