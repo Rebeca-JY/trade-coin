@@ -20,7 +20,7 @@
         <a href="/" class="absolute left-6 top-1/2 -translate-y-1/2 text-[#3a5a64] font-bold hover:-translate-x-1 transition">
             <i class="fa-solid fa-chevron-left"></i> Back
         </a>
-        <h1 class="text-[#3a5a64] text-4xl">Sign Up</h1>
+        <h1 class="text-[#3a5a64] text-4xl">Sign In</h1>
     </div>
 
     <!-- Card Body Start -->
@@ -57,7 +57,7 @@
             <!-- Button -->
             <button type="submit"
                 class="w-full bg-[#567f89] text-white py-3 rounded-2xl text-xl border border-[#3a5a64] shadow-md hover:bg-[#4a6d76] transition">
-                Sign Up
+                Sign In
             </button>
 
             <!-- Login link -->

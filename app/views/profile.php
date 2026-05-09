@@ -9,6 +9,11 @@
 <body class="bg-white p-6 md:p-10 font-sans text-gray-800">
 
     <?php
+
+    require_once '../../vendor/autoload.php';
+
+    // Jika data tidak dikirim dari controller, ambil dari database manual
+
     if (!isset($user)) {
         echo '<p class="text-center text-red-600 mt-8">Silakan <a href="/login" class="underline">login</a> untuk melihat profil.</p>';
         exit;
