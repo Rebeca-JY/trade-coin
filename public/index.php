@@ -45,6 +45,7 @@ $router->add('GET', '/products/{id}', 'ProductController', 'show');
 // edit Barang -> ProductController@edit
 // tambah Barang -> ProductController@create    
 $router->add('GET', '/products-add', 'ProductCreateController', 'create');
+$router->add('POST', '/products-add', 'ProductCreateController', 'create');
 
 // Login Page
 $router->add('GET', '/login', 'LoginController', 'loginView');

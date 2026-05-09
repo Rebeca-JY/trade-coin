@@ -8,6 +8,7 @@ class UserPoint
 {
     private $db;
     private $table = 'user_points';
+    private ?bool $hasUpdatedAtColumn = null;
 
     public function __construct()
     {
@@ -58,13 +59,35 @@ class UserPoint
      */
     public function getAllUsersWithPoints()
     {
+        // Beberapa DB lama belum punya kolom user_points.updated_at
+        $lastUpdatedExpr = $this->hasUserPointsUpdatedAt()
+            ? 'COALESCE(up.updated_at, u.created_at)'
+            : 'u.created_at';
+
         $sql = "SELECT u.id, u.username, u.email, u.role, 
-                       COALESCE(up.total_points, 0) as total_points 
+                       COALESCE(up.total_points, 0) as total_points,
+                       {$lastUpdatedExpr} as last_updated
                 FROM users u 
                 LEFT JOIN {$this->table} up ON u.id = up.user_id 
                 ORDER BY u.username ASC";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function hasUserPointsUpdatedAt(): bool
+    {
+        if ($this->hasUpdatedAtColumn !== null) {
+            return $this->hasUpdatedAtColumn;
+        }
+
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM {$this->table} LIKE 'updated_at'");
+            $this->hasUpdatedAtColumn = (bool) $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            $this->hasUpdatedAtColumn = false;
+        }
+
+        return $this->hasUpdatedAtColumn;
     }
 
     /**

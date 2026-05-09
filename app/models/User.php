@@ -216,4 +216,23 @@ class User
 
         return (int)($row['c'] ?? 0);
     }
+
+    /**
+     * Otomatis jadikan seller ketika user mulai posting produk.
+     * Admin tidak diubah.
+     */
+    public function promoteToSeller(int $userId): bool
+    {
+        $user = $this->getUserById($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $role = $user['role'] ?? 'buyer';
+        if ($role === 'admin' || $role === 'seller') {
+            return true;
+        }
+
+        return (bool) $this->db->update('users', ['role' => 'seller'], ['id' => $userId]);
+    }
 }
