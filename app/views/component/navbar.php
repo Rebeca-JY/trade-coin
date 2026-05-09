@@ -1,7 +1,21 @@
 <?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $messageCount = 0;
 $cartCount = 0;
-$userPoints = 500;
+$userCoins = 0;
+$loggedIn = isset($_SESSION['user']['id']);
+
+if ($loggedIn) {
+    try {
+        $pointModel = new \App\models\UserPoint();
+        $userCoins = (int) $pointModel->getUserPoints((int) $_SESSION['user']['id']);
+    } catch (\Throwable $e) {
+        $userCoins = (int) ($_SESSION['user']['coins'] ?? 0);
+    }
+}
 ?>
 
 <nav class="bg-white mx-[5%] my-4 px-8 py-3 flex items-center justify-between shadow-sm rounded-full border border-gray-200 relative z-[1000]">
@@ -37,12 +51,21 @@ $userPoints = 500;
             </div>
             
             <div id="tcDropdown" class="absolute right-0 mt-4 w-[220px] bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden py-2 transition-all duration-200 opacity-0 scale-95 origin-top-right pointer-events-none">
-                <p class="px-5 py-3 text-sm text-[#333] bg-gray-50 m-0 border-b border-gray-100">Points : <b class="text-[#567f89]"><?= number_format($userPoints) ?></b></p>
-                <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-regular fa-user w-5 text-center text-gray-500"></i> Account Profile</a>
-                <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-gear w-5 text-center text-gray-500"></i> Account Setting</a>
-                <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-clock-rotate-left w-5 text-center text-gray-500"></i> History</a>
+                <p class="px-5 py-3 text-sm text-[#333] bg-gray-50 m-0 border-b border-gray-100">
+                    Coins : <b class="text-[#567f89]"><?= number_format($userCoins) ?></b>
+                    <?php if (!$loggedIn): ?>
+                        <span class="block text-[11px] font-normal text-gray-500 mt-1">Login untuk saldo akun</span>
+                    <?php endif; ?>
+                </p>
+                <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-regular fa-user w-5 text-center text-gray-500"></i> Account Profile</a>
+                <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-gear w-5 text-center text-gray-500"></i> Account Setting</a>
+                <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-clock-rotate-left w-5 text-center text-gray-500"></i> History</a>
                 <hr class="border-gray-100 mx-2">
-                <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-sm text-red-600 font-bold no-underline hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout</a>
+                <?php if ($loggedIn): ?>
+                <a href="/logout" class="flex items-center gap-3 px-5 py-2.5 text-sm text-red-600 font-bold no-underline hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout</a>
+                <?php else: ?>
+                <a href="/login" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#567f89] font-semibold no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-right-to-bracket w-5 text-center"></i> Login</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -12,6 +12,10 @@
 
             <!-- Navigation Links -->
             <div class="flex items-center gap-8">
+                <a href="/admin" class="hover:text-blue-400 transition flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </a>
                 <a href="/admin/products" class="hover:text-blue-400 transition flex items-center gap-2">
                     <i class="fas fa-box"></i>
                     Produk
