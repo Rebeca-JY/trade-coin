@@ -60,7 +60,8 @@ if (mysqli_query($conn, $sql_users)) {
 // Kolom foto profil (upload dari /profile)
 $colProfile = mysqli_query($conn, "SHOW COLUMNS FROM users LIKE 'profile_image'");
 if ($colProfile && mysqli_num_rows($colProfile) === 0) {
-    if (mysqli_query($conn, "ALTER TABLE users ADD COLUMN profile_image VARCHAR(500) NULL DEFAULT NULL AFTER toko_nama")) {
+    // Tanpa AFTER: beberapa DB tidak punya toko_nama — AFTER akan gagal dan kolom tidak terbuat.
+    if (mysqli_query($conn, "ALTER TABLE users ADD COLUMN profile_image VARCHAR(500) NULL DEFAULT NULL")) {
         echo "✅ Kolom 'users.profile_image' ditambahkan<br>";
     } else {
         echo "⚠️ Gagal tambah profile_image: " . mysqli_error($conn) . "<br>";

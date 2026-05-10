@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
 
         <!-- HEADER -->
         <div class="bg-[#c2d1d6] py-8 px-6 text-center border-b border-[#b0c4c9] relative">
-            <a href="/" class="absolute left-6 top-1/2 -translate-y-1/2 text-[#3a5a64] font-bold no-underline transition-all duration-300 hover:-translate-x-1">
+            <a href="<?= htmlspecialchars(url_for('/')) ?>" class="absolute left-6 top-1/2 -translate-y-1/2 text-[#3a5a64] font-bold no-underline transition-all duration-300 hover:-translate-x-1">
                 <i class="fa-solid fa-chevron-left"></i> Back
             </a>
             <h1 class="text-[#3a5a64] text-4xl">Log in</h1>
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
                 </div>
             <?php endif; ?>
 
-            <form action="/login" method="POST" class="space-y-8">
+            <form action="<?= htmlspecialchars(url_for('/login')) ?>" method="POST" class="space-y-8">
 
                 <!-- EMAIL / USERNAME -->
                 <div class="relative">
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
                 <div class="text-center text-[#3a5a64] text-sm pt-4">
                     <p>
                         Don't have an account?
-                        <a href="/register" class="font-semibold hover:underline">Register</a>
+                        <a href="<?= htmlspecialchars(url_for('/register')) ?>" class="font-semibold hover:underline">Register</a>
                     </p>
                 </div>
 

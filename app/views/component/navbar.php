@@ -26,7 +26,7 @@ if ($loggedIn) {
 
     <ul class="flex items-center gap-8 list-none m-0 p-0">
         <li><a href="/products" class="text-gray-700 hover:text-black font-medium transition-colors">Search Item & Service</a></li>
-        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Sell Item & Service</a></li>
+        <li><a href="/products-add" class="text-gray-700 hover:text-black font-medium transition-colors">Sell Item & Service</a></li>
         <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Guide</a></li>
         <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Contact Us</a></li>
     </ul>
@@ -69,7 +69,7 @@ if ($loggedIn) {
                 <?php if ($loggedIn): ?>
                 <a href="/logout" class="flex items-center gap-3 px-5 py-2.5 text-sm text-red-600 font-bold no-underline hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout</a>
                 <?php else: ?>
-                <a href="/login" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#567f89] font-semibold no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-right-to-bracket w-5 text-center"></i> Login</a>
+                <a href="<?= htmlspecialchars(url_for('/login')) ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#567f89] font-semibold no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-right-to-bracket w-5 text-center"></i> Login</a>
                 <?php endif; ?>
             </div>
         </div>
