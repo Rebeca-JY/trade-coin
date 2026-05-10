@@ -21,6 +21,7 @@ spl_autoload_register(function ($class) {
 
 require_once '../app/core/Router.php';
 require_once __DIR__ . '/../app/config/database.php';
+require_once __DIR__ . '/../app/config/app.php';
 use App\Core\Router;
 
 $router = new Router();
@@ -28,7 +29,9 @@ $router = new Router();
 // Register Route
 
 // Landing page
-// $router->add('GET', '/', 'LandingController', 'landingView');
+$router->add('GET', '/', 'LandingController', 'landingView');
+$router->add('GET', '/topup', 'TopUpController', 'index');
+$router->add('POST', '/topup', 'TopUpController', 'index');
 
 // Keranjang
 $router->add('GET', '/cart', 'CartController', 'cartView');
@@ -61,9 +64,11 @@ $router->add('GET', '/cart', 'CartController', 'cartView');
 $router->add('POST', '/cart/add', 'CartController', 'addItem');
 $router->add('POST', '/cart/update', 'CartController', 'updateItem');
 $router->add('POST', '/cart/remove', 'CartController', 'removeItem');
+$router->add('POST', '/cart/checkout', 'CartController', 'checkout');
 
 // Profile Page
 $router->add('GET', '/profile', 'ProfileController', 'index');
+$router->add('POST', '/profile/upload-photo', 'ProfileController', 'uploadPhoto');
 $router->add('GET', '/profile/{id}', 'ProfileController', 'index');
 
 

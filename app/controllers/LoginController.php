@@ -2,6 +2,7 @@
 namespace App\controllers;
 
 use App\models\User;
+use App\models\UserPoint;
 
 class LoginController
 {
@@ -45,6 +46,13 @@ class LoginController
         }
 
         $_SESSION['user'] = $user;
+        try {
+            $points = new UserPoint();
+            $points->ensureWallet((int) $user['id']);
+            $_SESSION['user']['coins'] = (int) $points->getUserPoints((int) $user['id']);
+        } catch (\Throwable $e) {
+            $_SESSION['user']['coins'] = (int) ($_SESSION['user']['coins'] ?? 0);
+        }
         header('Location: /profile');
         exit;
     }

@@ -10,8 +10,6 @@
 
     <?php
 
-    require_once '../../vendor/autoload.php';
-
     // Jika data tidak dikirim dari controller, ambil dari database manual
 
     if (!isset($user)) {
@@ -46,12 +44,22 @@
             </div>
         </header>
 
+        <?php if (!empty($flash)): ?>
+            <div class="mb-6 rounded-xl px-4 py-3 text-sm <?= ($flash['type'] ?? '') === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200' ?>">
+                <?= htmlspecialchars($flash['message'] ?? '') ?>
+            </div>
+        <?php endif; ?>
+
         <section class="flex flex-col items-center text-center mb-12">
             <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-100 mb-4">
                 <img src="<?= $profileImage ?>" alt="Profile" class="w-full h-full object-cover">
             </div>
             <h1 class="text-2xl font-serif text-gray-700"><?= $userName ?></h1>
             <p class="text-gray-500 text-sm"><?= $userEmail ?></p>
+            <form action="/profile/upload-photo" method="POST" enctype="multipart/form-data" class="mt-4 flex items-center gap-2">
+                <input type="file" name="profile_image" accept=".jpg,.jpeg,.png,.webp" class="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white" required>
+                <button type="submit" class="text-xs bg-[#6B9CAA] text-white px-3 py-1.5 rounded-lg hover:bg-[#5a8d9c] transition">Upload Foto</button>
+            </form>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
