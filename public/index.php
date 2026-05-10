@@ -59,6 +59,11 @@ $router->add('GET', '/login', 'LoginController', 'loginView');
 $router->add('POST', '/login', 'LoginController', 'loginSubmit');
 $router->add('GET', '/logout', 'LoginController', 'logout');
 
+// Register Page
+$router->add('GET', '/register', 'SignupController', 'signupView');
+$router->add('POST', '/register', 'SignupController', 'signupSubmit');
+
+
 // Cart actions
 $router->add('GET', '/cart', 'CartController', 'cartView');
 $router->add('POST', '/cart/add', 'CartController', 'addItem');
