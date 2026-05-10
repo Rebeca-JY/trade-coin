@@ -25,7 +25,7 @@
 
     <!-- Card Body Start -->
     <div class="p-10">
-        <form method="POST" class="space-y-6">
+<form method="POST" action="/register" class="space-y-6">
 
             <!-- Email -->
             <div>
