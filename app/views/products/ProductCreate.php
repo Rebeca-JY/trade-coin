@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeCoin - Shopping Cart</title>
+    <title>TradeCoin — Tambah Produk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="bg-[#f8fafc] text-[#334155] min-h-screen">
+<body class="bg-[#e8f2f6] text-slate-700 min-h-screen font-sans antialiased">
 
     <?php include '../app/views/component/navbar.php'; ?>
-    <div class="bg-[#C1E1E9] min-h-screen flex flex-col font-serif">
+
+    <div class="px-4 sm:px-6 pb-16 pt-2">
         <?php if (!empty($errors ?? [])): ?>
-            <div class="max-w-3xl mx-auto mt-6 px-6">
+            <div class="max-w-4xl mx-auto mb-6">
                 <div class="bg-red-50 border border-red-200 text-red-800 rounded-2xl p-4">
                     <ul class="list-disc pl-5 space-y-1 text-sm">
                         <?php foreach (($errors ?? []) as $e): ?>
@@ -26,69 +27,120 @@
         <?php endif; ?>
 
         <?php if (!empty($success ?? null)): ?>
-            <div class="max-w-3xl mx-auto mt-6 px-6">
+            <div class="max-w-4xl mx-auto mb-6">
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-2xl p-4 text-sm font-semibold">
                     <?= htmlspecialchars($success) ?>
                 </div>
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="/products-add" class="contents">
-        <main
-            class="flex-grow container mx-auto px-6 py-10 flex flex-col md:flex-row gap-12 items-start justify-center">
-            <div
-                class="w-full md:w-[400px] aspect-square bg-white rounded-3xl border border-gray-400 flex items-center justify-center relative shadow-sm cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-black" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                    </svg>
-                    <span class="absolute top-[41%] right-[38%] text-3xl font-bold">+</span>
-                </div>
-            </div>
+        <form method="POST" action="/products-add" enctype="multipart/form-data"
+            class="max-w-4xl mx-auto bg-[#c5dfe9] rounded-[2rem] shadow-[0_8px_30px_rgba(70,120,140,0.12)] border border-white/40 p-6 sm:p-10 md:p-12">
 
-            <div class="w-full max-w-xl space-y-4">
-                <div>
-                    <label class="block font-bold mb-1 text-black">Product Name</label>
-                    <input type="text" name="nama_produk" value="<?= htmlspecialchars($form['nama_produk'] ?? '') ?>"
-                        class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-black">Product Description</label>
-                    <textarea rows="4" name="deskripsi"
-                        class="w-full bg-white border border-gray-400 rounded-2xl px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm"><?= htmlspecialchars($form['deskripsi'] ?? '') ?></textarea>
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-black">Price</label>
-                    <input type="text" name="harga" value="<?= htmlspecialchars($form['harga'] ?? '') ?>"
-                        class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-black">Category</label>
-                    <input type="text" name="category" value="<?= htmlspecialchars($form['category'] ?? '') ?>"
-                        class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-black">Material</label>
-                    <input type="text" name="material" value="<?= htmlspecialchars($form['material'] ?? '') ?>"
-                        class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
-                </div>
-            </div>
-        </main>
+            <div class="flex flex-col lg:flex-row gap-10 lg:gap-14 items-stretch">
+                <!-- Kolom gambar -->
+                <div class="w-full lg:w-[min(100%,380px)] lg:flex-shrink-0">
+                    <label for="product_image" id="drop-zone"
+                        class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[#5b9bd4] bg-white/70 transition hover:bg-white/90 hover:border-[#4a8bc9]">
+                        <input type="file" name="product_image" id="product_image" accept="image/jpeg,image/png,image/webp"
+                            class="sr-only">
 
-        <footer class="bg-white p-5 border-t border-gray-300 mt-auto">
-            <div class="max-w-7xl mx-auto flex justify-end gap-4 px-6 md:px-12">
-                <button
-                    class="px-14 py-2 border border-black rounded-xl font-bold hover:bg-gray-50 transition-all active:scale-95">
-                    Draft
-                </button>
-                <button
-                    type="submit"
-                    class="px-14 py-2 bg-[#8DBCCB] border border-black rounded-xl font-bold hover:bg-[#7ba9b8] transition-all active:scale-95">
-                    Post
-                </button>
+                        <img id="image-preview" src="" alt=""
+                            class="absolute inset-0 hidden h-full w-full object-cover" />
+
+                        <div id="upload-placeholder" class="flex flex-col items-center gap-3 px-6 text-center pointer-events-none">
+                            <i class="fa-regular fa-image text-5xl text-[#5b9bd4]/80"></i>
+                            <p class="text-sm font-bold text-slate-600">Klik atau seret gambar ke sini</p>
+                            <p class="text-xs text-slate-500">JPG, PNG, atau WEBP · maks. 5MB</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Kolom form -->
+                <div class="flex min-w-0 flex-1 flex-col gap-6">
+                    <div>
+                        <label for="nama_produk" class="mb-2 block text-sm font-bold text-slate-800">Product Name</label>
+                        <input type="text" name="nama_produk" id="nama_produk"
+                            value="<?= htmlspecialchars($form['nama_produk'] ?? '') ?>"
+                            class="w-full rounded-2xl border-0 bg-white px-5 py-3.5 text-slate-800 shadow-sm outline-none ring-1 ring-slate-200/80 transition placeholder:text-slate-400 focus:ring-2 focus:ring-[#7aa8bc]"
+                            autocomplete="off">
+                    </div>
+
+                    <div class="flex-1 min-h-[140px] flex flex-col">
+                        <label for="deskripsi" class="mb-2 block text-sm font-bold text-slate-800">Product Description</label>
+                        <textarea name="deskripsi" id="deskripsi" rows="6"
+                            class="min-h-[160px] w-full flex-1 resize-y rounded-2xl border-0 bg-white px-5 py-3.5 text-slate-800 shadow-sm outline-none ring-1 ring-slate-200/80 transition placeholder:text-slate-400 focus:ring-2 focus:ring-[#7aa8bc]"><?= htmlspecialchars($form['deskripsi'] ?? '') ?></textarea>
+                    </div>
+
+                    <div>
+                        <label for="harga" class="mb-2 block text-sm font-bold text-slate-800">Price (Rp)</label>
+                        <input type="text" name="harga" id="harga" inputmode="numeric"
+                            value="<?= htmlspecialchars($form['harga'] ?? '') ?>"
+                            placeholder="Contoh: 50000"
+                            class="w-full rounded-2xl border-0 bg-white px-5 py-3.5 text-slate-800 shadow-sm outline-none ring-1 ring-slate-200/80 transition placeholder:text-slate-400 focus:ring-2 focus:ring-[#7aa8bc]"
+                            autocomplete="off">
+                    </div>
+
+                    <div class="mt-2 flex justify-end pt-2">
+                        <button type="submit"
+                            class="rounded-2xl bg-[#8aa8b5] px-12 py-3.5 text-base font-bold text-slate-800 shadow-[0_4px_14px_rgba(60,90,105,0.25)] transition hover:bg-[#7d9aa8] active:scale-[0.98]">
+                            Post
+                        </button>
+                    </div>
+                </div>
             </div>
-        </footer>
         </form>
     </div>
+
+    <script>
+        (function () {
+            const input = document.getElementById('product_image');
+            const zone = document.getElementById('drop-zone');
+            const preview = document.getElementById('image-preview');
+            const placeholder = document.getElementById('upload-placeholder');
+
+            function showPreview(file) {
+                if (!file || !file.type.startsWith('image/')) return;
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+                preview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+
+            input.addEventListener('change', function () {
+                const f = this.files && this.files[0];
+                if (f) showPreview(f);
+            });
+
+            ['dragenter', 'dragover'].forEach(function (ev) {
+                zone.addEventListener(ev, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    zone.classList.add('bg-white', 'ring-2', 'ring-[#5b9bd4]');
+                });
+            });
+            ['dragleave', 'drop'].forEach(function (ev) {
+                zone.addEventListener(ev, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    zone.classList.remove('bg-white', 'ring-2', 'ring-[#5b9bd4]');
+                });
+            });
+            zone.addEventListener('drop', function (e) {
+                const dt = e.dataTransfer;
+                if (!dt || !dt.files || !dt.files[0]) return;
+                const file = dt.files[0];
+                try {
+                    const list = new DataTransfer();
+                    list.items.add(file);
+                    input.files = list.files;
+                } catch (err) {
+                    input.files = dt.files;
+                }
+                showPreview(file);
+            });
+        })();
+    </script>
+</body>
+
+</html>

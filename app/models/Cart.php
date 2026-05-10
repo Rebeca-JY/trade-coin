@@ -1,7 +1,7 @@
 <?php
 namespace App\models;
 
-use App\core\Database;
+use App\Core\Database;
 
 class Cart
 {
@@ -39,17 +39,28 @@ class Cart
 
     private function resolveCartTable()
     {
-        $table = $this->db->selectOne("SHOW TABLES LIKE 'cart_items'");
-        if (!empty($table)) {
-            return 'cart_items';
-        }
-
-        $table = $this->db->selectOne("SHOW TABLES LIKE 'cart'");
-        if (!empty($table)) {
-            return 'cart';
+        // Utamakan `cart` (skema setup-db proyek) agar tidak tertimpa tabel `cart_items` lain yang beda struktur.
+        foreach (['cart', 'cart_items'] as $name) {
+            $row = $this->db->selectOne("SHOW TABLES LIKE '{$name}'");
+            if (!empty($row) && $this->cartTableHasCoreColumns($name)) {
+                return $name;
+            }
         }
 
         return null;
+    }
+
+    private function cartTableHasCoreColumns(string $table): bool
+    {
+        $cols = $this->db->select("SHOW COLUMNS FROM `{$table}`");
+        $names = [];
+        foreach ($cols as $c) {
+            $names[] = strtolower((string) ($c['Field'] ?? $c['field'] ?? ''));
+        }
+
+        return in_array('user_id', $names, true)
+            && in_array('product_id', $names, true)
+            && in_array('quantity', $names, true);
     }
 
     private function resolveCartColumns(): void
@@ -169,6 +180,18 @@ class Cart
         return $this->db->execute(
             "DELETE FROM {$this->cartTable} WHERE id = ? AND user_id = ?",
             [$cartItemId, $userId]
+        );
+    }
+
+    public function clearCart(int $userId): bool
+    {
+        if ($this->cartTable === null) {
+            return false;
+        }
+
+        return $this->db->execute(
+            "DELETE FROM {$this->cartTable} WHERE user_id = ?",
+            [$userId]
         );
     }
 }

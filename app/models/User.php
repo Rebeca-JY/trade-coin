@@ -235,4 +235,9 @@ class User
 
         return (bool) $this->db->update('users', ['role' => 'seller'], ['id' => $userId]);
     }
+
+    public function updateProfileImage(int $userId, string $imagePath): bool
+    {
+        return (bool) $this->db->update('users', ['profile_image' => $imagePath], ['id' => $userId]);
+    }
 }

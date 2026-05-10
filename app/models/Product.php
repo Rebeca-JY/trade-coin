@@ -220,11 +220,24 @@ class Product
             unset($mappedData[$idColumn]);
         }
 
+        // Form jual barang tidak selalu mengirim stok — kalau kolom ada, isi default
+        if ($this->columns['stock'] !== null) {
+            $stockCol = $this->columns['stock'];
+            if (!isset($mappedData[$stockCol]) || $mappedData[$stockCol] === '' || $mappedData[$stockCol] === null) {
+                $mappedData[$stockCol] = 1;
+            }
+        }
+
+        // Gambar boleh kosong string bila kolom wajib NOT NULL tanpa default
+        if ($this->columns['image'] !== null) {
+            $imgCol = $this->columns['image'];
+            if (!isset($mappedData[$imgCol]) || $mappedData[$imgCol] === null) {
+                $mappedData[$imgCol] = '';
+            }
+        }
+
         // Validasi field wajib berdasarkan mapping schema
         $required = ['nama_produk', 'harga'];
-        if ($this->columns['stock'] !== null) {
-            $required[] = 'stock';
-        }
         if ($this->columns['seller'] !== null) {
             $required[] = 'nama_penjual';
         }
