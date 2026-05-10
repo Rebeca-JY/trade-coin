@@ -107,7 +107,7 @@ class AdminDashboardController
                     try {
                         $this->userPointModel->addPoints($userId, $points, $reason);
                         $success = "Poin berhasil diberikan ke {$user['username']}";
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $errors[] = 'Database error: ' . $e->getMessage();
                     }
                 }
@@ -132,6 +132,16 @@ class AdminDashboardController
     {
         $errors = [];
         $success = null;
+
+        $userIdGet = $_GET['id'] ?? null;
+        $user = null;
+        if ($userIdGet && is_numeric($userIdGet)) {
+            $user = $this->userModel->getUserById($userIdGet);
+            if (!$user) {
+                header('Location: /admin/manage-points');
+                exit;
+            }
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_POST['user_id'] ?? null;
@@ -162,7 +172,7 @@ class AdminDashboardController
                         try {
                             $this->userPointModel->deductPoints($userId, $points, $reason);
                             $success = "Poin berhasil dikurangi dari {$user['username']}";
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             $errors[] = 'Database error: ' . $e->getMessage();
                         }
                     }
@@ -175,6 +185,7 @@ class AdminDashboardController
         $this->render('deduct-points', [
             'errors' => $errors,
             'success' => $success,
+            'user' => $user,
             'allUsers' => $allUsers,
             'pageTitle' => 'Kurangi Poin',
         ]);
@@ -187,6 +198,16 @@ class AdminDashboardController
     {
         $errors = [];
         $success = null;
+
+        $userIdGet = $_GET['id'] ?? null;
+        $user = null;
+        if ($userIdGet && is_numeric($userIdGet)) {
+            $user = $this->userModel->getUserById($userIdGet);
+            if (!$user) {
+                header('Location: /admin/manage-points');
+                exit;
+            }
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_POST['user_id'] ?? null;
@@ -213,7 +234,7 @@ class AdminDashboardController
                     try {
                         $this->userPointModel->setPoints($userId, $points, $reason);
                         $success = "Poin {$user['username']} berhasil diubah menjadi {$points}";
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $errors[] = 'Database error: ' . $e->getMessage();
                     }
                 }
@@ -225,6 +246,7 @@ class AdminDashboardController
         $this->render('set-points', [
             'errors' => $errors,
             'success' => $success,
+            'user' => $user,
             'allUsers' => $allUsers,
             'pageTitle' => 'Set Poin User',
         ]);

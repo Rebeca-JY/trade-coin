@@ -13,6 +13,27 @@
 
     <?php include '../app/views/component/navbar.php'; ?>
     <div class="bg-[#C1E1E9] min-h-screen flex flex-col font-serif">
+        <?php if (!empty($errors ?? [])): ?>
+            <div class="max-w-3xl mx-auto mt-6 px-6">
+                <div class="bg-red-50 border border-red-200 text-red-800 rounded-2xl p-4">
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <?php foreach (($errors ?? []) as $e): ?>
+                            <li><?= htmlspecialchars($e) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($success ?? null)): ?>
+            <div class="max-w-3xl mx-auto mt-6 px-6">
+                <div class="bg-green-50 border border-green-200 text-green-800 rounded-2xl p-4 text-sm font-semibold">
+                    <?= htmlspecialchars($success) ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="/products-add" class="contents">
         <main
             class="flex-grow container mx-auto px-6 py-10 flex flex-col md:flex-row gap-12 items-start justify-center">
             <div
@@ -30,27 +51,27 @@
             <div class="w-full max-w-xl space-y-4">
                 <div>
                     <label class="block font-bold mb-1 text-black">Product Name</label>
-                    <input type="text"
+                    <input type="text" name="nama_produk" value="<?= htmlspecialchars($form['nama_produk'] ?? '') ?>"
                         class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-black">Product Description</label>
-                    <textarea rows="4"
-                        class="w-full bg-white border border-gray-400 rounded-2xl px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm"></textarea>
+                    <textarea rows="4" name="deskripsi"
+                        class="w-full bg-white border border-gray-400 rounded-2xl px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm"><?= htmlspecialchars($form['deskripsi'] ?? '') ?></textarea>
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-black">Price</label>
-                    <input type="text"
+                    <input type="text" name="harga" value="<?= htmlspecialchars($form['harga'] ?? '') ?>"
                         class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-black">Category</label>
-                    <input type="text"
+                    <input type="text" name="category" value="<?= htmlspecialchars($form['category'] ?? '') ?>"
                         class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-black">Material</label>
-                    <input type="text"
+                    <input type="text" name="material" value="<?= htmlspecialchars($form['material'] ?? '') ?>"
                         class="w-full bg-white border border-gray-400 rounded-full px-5 py-2 focus:ring-1 focus:ring-gray-500 outline-none shadow-sm">
                 </div>
             </div>
@@ -63,9 +84,11 @@
                     Draft
                 </button>
                 <button
+                    type="submit"
                     class="px-14 py-2 bg-[#8DBCCB] border border-black rounded-xl font-bold hover:bg-[#7ba9b8] transition-all active:scale-95">
                     Post
                 </button>
             </div>
         </footer>
+        </form>
     </div>

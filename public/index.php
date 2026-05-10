@@ -45,10 +45,16 @@ $router->add('GET', '/products/{id}', 'ProductController', 'show');
 // edit Barang -> ProductController@edit
 // tambah Barang -> ProductController@create    
 $router->add('GET', '/products-add', 'ProductCreateController', 'create');
+$router->add('POST', '/products-add', 'ProductCreateController', 'create');
+
+// Sellpage
+$router->add('GET', '/sellpage', 'SellPageController', 'index');
+$router->add('POST', '/sellpage', 'SellPageController', 'submit');
 
 // Login Page
 $router->add('GET', '/login', 'LoginController', 'loginView');
 $router->add('POST', '/login', 'LoginController', 'loginSubmit');
+$router->add('GET', '/logout', 'LoginController', 'logout');
 
 // Cart actions
 $router->add('GET', '/cart', 'CartController', 'cartView');
@@ -61,10 +67,18 @@ $router->add('GET', '/profile', 'ProfileController', 'index');
 $router->add('GET', '/profile/{id}', 'ProfileController', 'index');
 
 
-
-
-
 // Admin pages
+$router->add('GET', '/admin', 'AdminDashboardController', 'index'); // Alias dashboard
+$router->add('GET', '/admin/dashboard', 'AdminDashboardController', 'index'); // Dashboard utama admin
+$router->add('GET', '/admin/manage-points', 'AdminDashboardController', 'managePoints'); // Kelola poin user di admin
+$router->add('GET', '/admin/give-points', 'AdminDashboardController', 'givePoints');
+$router->add('POST', '/admin/give-points', 'AdminDashboardController', 'givePoints');
+$router->add('GET', '/admin/deduct-points', 'AdminDashboardController', 'deductPoints');
+$router->add('POST', '/admin/deduct-points', 'AdminDashboardController', 'deductPoints');
+$router->add('GET', '/admin/set-points', 'AdminDashboardController', 'setPoints');
+$router->add('POST', '/admin/set-points', 'AdminDashboardController', 'setPoints');
+$router->add('GET', '/admin/point-history', 'AdminDashboardController', 'pointHistory');
+
 
 // Admin Products
 $router->add('GET', '/admin/products', 'AdminProductController', 'index'); // Daftar produk di admin

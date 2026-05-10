@@ -61,38 +61,66 @@ class User
     // =========================
     public function login($loginId, $password)
     {
-        $loginId = trim($loginId);
+        $loginId = trim((string)$loginId);
+        if ($loginId === '') {
+            return false;
+        }
 
-        // cari user berdasarkan email ATAU username
+        // Email atau username (case-insensitive + trim, supaya login pakai email tetap cocok)
         $user = $this->db->selectOne(
-            "SELECT * FROM users 
-             WHERE email = ? 
-             OR username = ?",
+            'SELECT * FROM users 
+             WHERE LOWER(TRIM(COALESCE(email, \'\'))) = LOWER(?)
+                OR LOWER(TRIM(COALESCE(username, \'\'))) = LOWER(?)',
             [$loginId, $loginId]
         );
 
-        // DEBUG
-        // uncomment kalau mau cek
-        /*
-        var_dump($loginId);
-        var_dump($user);
-        die();
-        */
-
-        // user tidak ditemukan
         if (!$user) {
             return false;
         }
 
-        // password salah
         if (!password_verify($password, $user['password'])) {
             return false;
         }
 
-        // hapus password dari session
         unset($user['password']);
 
         return $user;
+    }
+
+    /**
+     * Riwayat pembelian untuk halaman profil (tabel opsional).
+     */
+    public function getPurchaseHistory($userId)
+    {
+        try {
+            $rows = $this->db->select(
+                'SELECT id, product_title AS title, seller_name, product_desc AS description, product_image AS img
+                 FROM purchases WHERE user_id = ? ORDER BY id DESC LIMIT 10',
+                [$userId]
+            );
+
+            return is_array($rows) ? $rows : [];
+        } catch (\Throwable $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Riwayat penjualan untuk halaman profil (tabel opsional).
+     */
+    public function getSalesHistory($userId)
+    {
+        try {
+            $rows = $this->db->select(
+                'SELECT id, product_title AS title, seller_id, product_desc AS description, product_image AS img
+                 FROM sales WHERE seller_id = ? ORDER BY id DESC LIMIT 10',
+                [$userId]
+            );
+
+            return is_array($rows) ? $rows : [];
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     // =========================
@@ -170,5 +198,41 @@ class User
             'users',
             ['id' => $id]
         );
+    }
+
+    /**
+     * Hitung user; jika $role diisi, filter per peran (admin dashboard).
+     */
+    public function countUsers(?string $role = null): int
+    {
+        if ($role !== null && $role !== '') {
+            $row = $this->db->selectOne(
+                'SELECT COUNT(*) AS c FROM users WHERE role = ?',
+                [$role]
+            );
+        } else {
+            $row = $this->db->selectOne('SELECT COUNT(*) AS c FROM users');
+        }
+
+        return (int)($row['c'] ?? 0);
+    }
+
+    /**
+     * Otomatis jadikan seller ketika user mulai posting produk.
+     * Admin tidak diubah.
+     */
+    public function promoteToSeller(int $userId): bool
+    {
+        $user = $this->getUserById($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $role = $user['role'] ?? 'buyer';
+        if ($role === 'admin' || $role === 'seller') {
+            return true;
+        }
+
+        return (bool) $this->db->update('users', ['role' => 'seller'], ['id' => $userId]);
     }
 }

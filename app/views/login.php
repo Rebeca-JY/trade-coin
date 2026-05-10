@@ -1,55 +1,14 @@
 <?php
-// 1. Memulai Session
-session_start();
-
-// 2. Konfigurasi Database
-$host     = 'localhost';
-$db_user  = 'root';
-$db_pass  = '';
-$db_name  = 'tradecoin';
-
-// 3. Inisialisasi variabel untuk Form
-$loginId = $_POST['login_id'] ?? '';
-$error = '';
-
-// 4. Logika Proses Login
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $password = $_POST['password'] ?? '';
-
-    // Koneksi ke Database
-    $conn = new mysqli($host, $db_user, $db_pass, $db_name);
-
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Prepared Statement untuk mencegah SQL Injection
-    // Mencari berdasarkan username ATAU email
-    $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email = ? OR username = ? LIMIT 1");
-    $stmt->bind_param("ss", $loginId, $loginId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user) {
-        // Verifikasi password (asumsi di database di-hash dengan password_hash)
-        if (password_verify($password, $user['password'])) {
-            // Login Berhasil
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            
-            // Redirect (Ganti ke halaman tujuan setelah login)
-            header("Location: dashboard.php");
-            exit;
-        } else {
-            $error = "Password yang Anda masukkan salah.";
-        }
-    } else {
-        $error = "Akun tidak ditemukan.";
-    }
-
-    $stmt->close();
-    $conn->close();
+/**
+ * Form login — pemrosesan hanya lewat LoginController (POST /login).
+ */
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+$error = $error ?? '';
+$loginId = $loginId ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $loginId === '') {
+    $loginId = trim((string)($_POST['login_id'] ?? ''));
 }
 ?>
 
@@ -89,8 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <!-- FORM (Action dikosongkan agar memproses ke file ini sendiri) -->
-            <form action="" method="POST" class="space-y-8">
+            <form action="/login" method="POST" class="space-y-8">
 
                 <!-- EMAIL / USERNAME -->
                 <div class="relative">
@@ -101,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         type="text"
                         id="login_id"
                         name="login_id"
+
                         value="<?= htmlspecialchars($loginId) ?>"
                         placeholder="Enter your email/username"
                         class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64] placeholder-[#567f89]/50"
@@ -116,8 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="Enter your Password"
-                        class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64] placeholder-[#567f89]/50"
+                        placeholder="Enter your Password" 
+                        class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64]"
+
                         required>
                 </div>
 

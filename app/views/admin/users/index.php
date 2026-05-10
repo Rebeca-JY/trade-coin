@@ -23,113 +23,156 @@
     }, 3000);
 </script>
 
-<body class="bg-gray-50">
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800">
     <?php require __DIR__ . '/../component/navbar.php'; ?>
-
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header dengan tombol tambah -->
-        <div class="flex justify-between items-center mb-6">
+    
+    <div class="max-w-7xl mx-auto py-10 px-4">
+        
+        <header class="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Manajemen Users</h1>
-                <p class="text-gray-600 mt-2">Total Users: <span class="font-semibold"><?php echo $totalUsers; ?></span>
-                </p>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Manajemen Users</h1>
+                <p class="text-slate-500 mt-1 text-sm">Kelola akses, peran, dan data pengguna sistem.</p>
             </div>
-            <a href="/admin/users/create"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition flex items-center gap-2">
-                <i class="fas fa-plus"></i> Tambah User
-            </a>
-        </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="/products"
+                    class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition shadow-sm">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </a>
+                <a href="/admin/users/create"
+                    class="inline-flex items-center gap-2 rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 hover:shadow-md transition shadow-sm border border-transparent">
+                    <i class="fa-solid fa-user-plus"></i> Tambah User Baru
+                </a>
+            </div>
+        </header>
 
-        <!-- Success Message -->
         <?php if (isset($_GET['success'])): ?>
             <div id="alert-success"
-                class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg flex items-center justify-between transition-opacity duration-500">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-check-circle"></i>
+                class="mb-8 bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl flex items-center justify-between transition-all duration-500 shadow-sm">
+                <div class="flex items-center gap-3 font-medium text-sm">
+                    <div class="bg-emerald-100 p-1.5 rounded-full text-emerald-600">
+                        <i class="fas fa-check"></i>
+                    </div>
                     <span><?php echo htmlspecialchars($_GET['success']); ?></span>
                 </div>
-                <button onclick="closeAlert()" class="text-xl">&times;</button>
+                <button onclick="closeAlert()" class="text-xl text-emerald-500 hover:text-emerald-700 transition-colors">&times;</button>
             </div>
         <?php endif; ?>
-        <!-- Table -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <?php if (!empty($users)): ?>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-100 border-b-2 border-gray-300">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">ID</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Username</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Email</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Nama Lengkap</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Role</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Terdaftar</th>
-                                <th class="px-6 py-4 text-center text-sm font-semibold text-gray-700">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+
+        <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3 mb-8">
+            <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200 flex items-center gap-5 transition hover:shadow-md">
+                <div class="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Total Users</h2>
+                    <p class="mt-1 text-3xl font-bold text-slate-800"><?php echo number_format($totalUsers ?? 0); ?></p>
+                </div>
+            </div>
+            
+            <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200 flex items-center gap-5 transition hover:shadow-md">
+                <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Admin dashboard</h2>
+                    <p class="mt-1 text-sm text-slate-700 font-medium">Admin dashboard di peruntukan untuk pengurus website saja</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            
+            <div class="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h3 class="font-bold text-slate-800 text-lg">Daftar Pengguna</h3>
+                <div class="relative w-full sm:w-72">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </div>
+                    <input type="text" class="bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-full focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-2.5 transition" placeholder="Cari nama atau email...">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-100 text-sm whitespace-nowrap">
+                    <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider text-left text-xs font-semibold">
+                        <tr>
+                            <th class="px-6 py-4">User Info</th>
+                            <th class="px-6 py-4">Role</th>
+                            <th class="px-6 py-4">Tanggal Daftar</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        <?php if (!empty($users)): ?>
                             <?php foreach ($users as $user): ?>
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
-                                    <td class="px-6 py-4 text-sm text-gray-900"><?php echo $user['id']; ?></td>
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                        <?php echo htmlspecialchars($user['username']); ?></td>
-                                    <td class="px-6 py-4 text-sm text-gray-600"><?php echo htmlspecialchars($user['email']); ?>
+                                <tr class="hover:bg-slate-50/70 transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($user['nama_lengkap']); ?>&background=f0f9ff&color=0284c7&bold=true&rounded=true" 
+                                                 alt="Avatar" 
+                                                 class="w-10 h-10 rounded-full shadow-sm border border-slate-200">
+                                            <div>
+                                                <div class="font-bold text-slate-800"><?php echo htmlspecialchars($user['nama_lengkap']); ?></div>
+                                                <div class="text-slate-500 text-xs flex items-center gap-2 mt-0.5">
+                                                    <span>@<?php echo htmlspecialchars($user['username']); ?></span>
+                                                    <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                                    <span><?php echo htmlspecialchars($user['email']); ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-700">
-                                        <?php echo htmlspecialchars($user['nama_lengkap']); ?></td>
-                                    <td class="px-6 py-4 text-sm">
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                    <?php
-                                    switch ($user['role']) {
-                                        case 'admin':
-                                            echo 'bg-red-100 text-red-800';
-                                            break;
-                                        case 'seller':
-                                            echo 'bg-purple-100 text-purple-800';
-                                            break;
-                                        default:
-                                            echo 'bg-blue-100 text-blue-800';
-                                    }
-                                    ?>
-                                ">
-                                            <?php echo ucfirst($user['role']); ?>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold
+                                            <?php
+                                            switch (strtolower($user['role'])) {
+                                                case 'admin':
+                                                    echo 'bg-rose-50 text-rose-600 border border-rose-100';
+                                                    $icon = 'fa-user-gear';
+                                                    break;
+                                                case 'seller':
+                                                    echo 'bg-purple-50 text-purple-600 border border-purple-100';
+                                                    $icon = 'fa-store';
+                                                    break;
+                                                default:
+                                                    echo 'bg-sky-50 text-sky-600 border border-sky-100';
+                                                    $icon = 'fa-user';
+                                            }
+                                            ?>
+                                        ">
+                                            <i class="fa-solid <?php echo $icon; ?> text-[10px]"></i>
+                                            <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
+                                    <td class="px-6 py-4 text-slate-500 font-medium">
                                         <?php echo date('d M Y', strtotime($user['created_at'])); ?>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center gap-2">
-                                            <a href="/admin/users/show?id=<?php echo $user['id']; ?>"
-                                                class="text-blue-600 hover:text-blue-900 transition" title="Lihat">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="/admin/users/edit?id=<?php echo $user['id']; ?>"
-                                                class="text-yellow-600 hover:text-yellow-900 transition" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="/admin/users/delete?id=<?php echo $user['id']; ?>"
-                                                class="text-red-600 hover:text-red-900 transition" title="Hapus"
-                                                onclick="return confirm('Yakin ingin menghapus user ini?')">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
+                                    <td class="px-6 py-4 text-center space-x-2">
+                                        <a href="/admin/users/show?id=<?php echo $user['id']; ?>"
+                                            class="inline-flex items-center rounded-full border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">View</a>
+                                        <a href="/admin/users/edit?id=<?php echo $user['id']; ?>"
+                                            class="inline-flex items-center rounded-full border border-sky-600 bg-sky-50 px-3 py-2 text-xs font-semibold text-sky-700 hover:bg-sky-100">Edit</a>
+                                        <a href="/admin/users/delete?id=<?php echo $user['id']; ?>"
+                                            onclick="return confirm('Peringatan: Yakin ingin menghapus user ini secara permanen?');"
+                                            class="inline-flex items-center rounded-full bg-rose-600 px-3 py-2 text-xs font-semibold text-white hover:bg-rose-700">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php else: ?>
-                <div class="text-center py-12">
-                    <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-600 text-lg">Belum ada users terdaftar</p>
-                    <a href="/admin/users/create"
-                        class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-                        Tambah User Pertama
-                    </a>
-                </div>
-            <?php endif; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td class="px-6 py-16 text-center" colspan="4">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                                            <i class="fa-solid fa-folder-open text-2xl text-slate-300"></i>
+                                        </div>
+                                        <p class="text-slate-500 font-medium">Belum ada users yang terdaftar.</p>
+                                        <p class="text-slate-400 text-xs mt-1">Tambahkan user baru untuk mulai mengelola.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

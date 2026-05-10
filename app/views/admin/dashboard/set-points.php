@@ -49,7 +49,7 @@
                     >
                         <option value="">-- Pilih User --</option>
                         <?php foreach ($allUsers as $u): ?>
-                        <option value="<?php echo $u['id']; ?>">
+                        <option value="<?php echo $u['id']; ?>" <?php echo (isset($user['id']) && (int)$user['id'] === (int)$u['id']) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($u['username']); ?> (<?php echo htmlspecialchars($u['email']); ?>)
                         </option>
                         <?php endforeach; ?>
