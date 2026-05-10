@@ -28,6 +28,19 @@ class UserPoint
     }
 
     /**
+     * Pastikan baris user_points ada (coin 0) supaya deduct aman.
+     */
+    public function ensureWallet(int $userId): void
+    {
+        $stmt = $this->db->prepare("SELECT id FROM {$this->table} WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        if (!$stmt->fetch()) {
+            $ins = $this->db->prepare("INSERT INTO {$this->table} (user_id, total_points) VALUES (?, 0)");
+            $ins->execute([$userId]);
+        }
+    }
+
+    /**
      * Get top users by points (Ini yang error tadi)
      */
     public function getTopUsers($limit = 5)

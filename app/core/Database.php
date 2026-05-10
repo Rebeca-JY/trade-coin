@@ -79,4 +79,14 @@ class Database
         $stmt = $this->conn->prepare("DELETE FROM $table WHERE $cond");
         return $stmt->execute(array_values($where));
     }
+
+    /**
+     * Eksekusi query dengan placeholder — dipakai Cart model.
+     */
+    public function execute(string $query, array $params = []): bool
+    {
+        $stmt = $this->conn->prepare($query);
+
+        return $stmt->execute($params);
+    }
 }

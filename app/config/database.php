@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+
+require_once dirname(__DIR__) . '/core/Database.php';
 
 use App\Core\Database;
 
@@ -19,8 +20,9 @@ if (!function_exists('db')) {
                 $GLOBALS['DB_NAME'] ?? 'tradecoin'
             );
         }
-        // Karena Database::getInstance biasanya mengembalikan object koneksi PDO/MySQLi
+
         return $instance;
     }
 }
+
 $db = db();

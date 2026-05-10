@@ -7,6 +7,7 @@ $messageCount = 0;
 $cartCount = 0;
 $userCoins = 0;
 $loggedIn = isset($_SESSION['user']['id']);
+$profileImage = $loggedIn ? ($_SESSION['user']['profile_image'] ?? '') : '';
 
 if ($loggedIn) {
     try {
@@ -46,9 +47,13 @@ if ($loggedIn) {
         </a>
 
         <div class="relative inline-block">
-            <div id="tcUserIcon" class="text-3xl text-[#333] cursor-pointer transition-all duration-200 hover:text-gray-600">
-                <i class="fas fa-user-circle"></i>
-            </div>
+            <button id="tcUserIcon" type="button" class="text-3xl text-[#333] cursor-pointer transition-all duration-200 hover:text-gray-600">
+                <?php if ($loggedIn && $profileImage !== ''): ?>
+                    <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="w-9 h-9 rounded-full object-cover border border-gray-300">
+                <?php else: ?>
+                    <i class="fas fa-user-circle"></i>
+                <?php endif; ?>
+            </button>
             
             <div id="tcDropdown" class="absolute right-0 mt-4 w-[220px] bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden py-2 transition-all duration-200 opacity-0 scale-95 origin-top-right pointer-events-none">
                 <p class="px-5 py-3 text-sm text-[#333] bg-gray-50 m-0 border-b border-gray-100">

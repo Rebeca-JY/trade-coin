@@ -19,7 +19,8 @@ class Router
     public function run()
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
+        $uri = $this->stripBasePath($uri);
 
         foreach ($this->routes as $route) {
 
@@ -58,5 +59,26 @@ class Router
 
         echo '<h1>404 - Page Not Found</h1>';
 
+    }
+
+    /**
+     * Samakan REQUEST_URI dengan pola route (/cart/add) saat app di subfolder Laragon/public.
+     */
+    private function stripBasePath(string $uri): string
+    {
+        if (!function_exists('app_base_path')) {
+            return $uri === '' ? '/' : $uri;
+        }
+
+        $base = app_base_path();
+        if ($base !== '' && strpos($uri, $base) === 0) {
+            $uri = substr($uri, strlen($base)) ?: '/';
+        }
+
+        if ($uri === '' || $uri[0] !== '/') {
+            $uri = '/' . ltrim($uri, '/');
+        }
+
+        return $uri;
     }
 }

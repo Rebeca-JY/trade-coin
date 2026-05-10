@@ -57,6 +57,18 @@ if (mysqli_query($conn, $sql_users)) {
     echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
 }
 
+// Kolom foto profil (upload dari /profile)
+$colProfile = mysqli_query($conn, "SHOW COLUMNS FROM users LIKE 'profile_image'");
+if ($colProfile && mysqli_num_rows($colProfile) === 0) {
+    if (mysqli_query($conn, "ALTER TABLE users ADD COLUMN profile_image VARCHAR(500) NULL DEFAULT NULL AFTER toko_nama")) {
+        echo "✅ Kolom 'users.profile_image' ditambahkan<br>";
+    } else {
+        echo "⚠️ Gagal tambah profile_image: " . mysqli_error($conn) . "<br>";
+    }
+} elseif ($colProfile) {
+    echo "✅ Kolom 'profile_image' sudah ada<br>";
+}
+
 // Step 2b: Poin user & riwayat (admin dashboard)
 echo "<h3>2️⃣b Membuat Tabel 'user_points' & 'point_history'</h3>";
 $sql_user_points = "CREATE TABLE IF NOT EXISTS user_points (
@@ -106,6 +118,17 @@ if (mysqli_query($conn, $sql_products)) {
     echo "✅ Tabel 'product' siap<br>";
 } else {
     echo "⚠️ Info: " . mysqli_error($conn) . "<br>";
+}
+
+$colStock = mysqli_query($conn, "SHOW COLUMNS FROM product LIKE 'stock'");
+if ($colStock && mysqli_num_rows($colStock) === 0) {
+    if (mysqli_query($conn, "ALTER TABLE product ADD COLUMN stock INT NOT NULL DEFAULT 999 AFTER gambar")) {
+        echo "✅ Kolom 'product.stock' ditambahkan<br>";
+    } else {
+        echo "⚠️ Gagal tambah stock: " . mysqli_error($conn) . "<br>";
+    }
+} elseif ($colStock) {
+    echo "✅ Kolom 'stock' pada product sudah ada<br>";
 }
 
 // Step 4: Buat tabel cart jika belum ada
