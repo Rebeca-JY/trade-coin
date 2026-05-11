@@ -112,7 +112,13 @@ $router->add('POST', '/admin/users/delete', 'AdminUserController', 'delete'); //
 
 
 
-
+// Jasa / Services CRUD (On sale & Edit)
+$router->add('GET', '/onsale', 'UserJasaController', 'index');
+$router->add('GET', '/onsale/create', 'UserJasaController', 'create');
+$router->add('POST', '/onsale/store', 'UserJasaController', 'store');
+$router->add('GET', '/onsale/edit/{id}', 'UserJasaController', 'edit');
+$router->add('POST', '/onsale/update/{id}', 'UserJasaController', 'update');
+$router->add('POST', '/onsale/delete/{id}', 'UserJasaController', 'delete');
 
 $router->run();
 ?>

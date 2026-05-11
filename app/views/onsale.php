@@ -1,5 +1,4 @@
 <?php
-require_once '../../vendor/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +11,9 @@ require_once '../../vendor/autoload.php';
 <body class="bg-white p-6 md:p-10 font-sans text-gray-800">
 
     <?php
-    $coins = 53;
-    $onSaleItems = [
-        [
-            "title" => "Drawing Service",
-            "desc" => "I draw everything you want, from living things until random things you want. Dm me for details!",
-            "img" => "../../public/foto/scara.png" 
-        ],
-    ];
+    $coins = $_SESSION['user']['coins'] ?? 53;
+    // $items is passed from the controller
+    if (!isset($items)) $items = [];
     ?>
 
     <div class="max-w-5xl mx-auto">
@@ -35,32 +29,43 @@ require_once '../../vendor/autoload.php';
         </header>
 
         <div class="bg-[#C9E1E9] p-6 md:p-10 rounded-[2.5rem] shadow-sm min-h-[400px]">
-            <h1 class="text-center text-3xl font-serif text-gray-700 mb-8">On sale</h1>
+            <div class="flex justify-between items-center mb-8 px-4">
+                <h1 class="text-3xl font-serif text-gray-700">On sale</h1>
+                <a href="/onsale/create" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full font-bold shadow transition">
+                    + Add New
+                </a>
+            </div>
 
             <div class="space-y-6">
-                <?php foreach($onSaleItems as $item): ?>
+                <?php if(empty($items)): ?>
+                    <p class="text-center text-gray-500 py-10">Belum ada jasa/produk yang dijual.</p>
+                <?php else: ?>
+                <?php foreach($items as $item): ?>
                 <div class="bg-white/40 backdrop-blur-sm border border-gray-400/30 p-6 rounded-[2rem] flex flex-col md:flex-row items-center gap-6">
                     
-                    <img src="<?= $item['img'] ?>" alt="Item" class="w-32 h-32 md:w-40 md:h-40 rounded-3xl object-cover shadow-sm">
+                    <img src="<?= htmlspecialchars(!empty($item['gambar']) ? $item['gambar'] : '/public/foto/scara.png') ?>" alt="Item" class="w-32 h-32 md:w-40 md:h-40 rounded-3xl object-cover shadow-sm">
                     
                     <div class="flex-1 text-center md:text-left">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2"><?= $item['title'] ?></h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2"><?= htmlspecialchars($item['nama_produk'] ?? '') ?></h3>
                         <p class="text-sm text-gray-600 leading-relaxed max-w-md">
-                            <?= $item['desc'] ?>
+                            <?= htmlspecialchars($item['deskripsi'] ?? '') ?>
                         </p>
                     </div>
 
                     <div class="flex flex-col gap-3">
-                        <button class="border border-gray-400 rounded-full px-8 py-1.5 text-sm bg-white/80 hover:bg-white transition shadow-sm">
+                        <a href="/onsale/edit/<?= $item['id'] ?>" class="border border-gray-400 rounded-full px-8 py-1.5 text-sm bg-white/80 hover:bg-white transition shadow-sm text-center">
                             Edit
-                        </button>
-                        <button class="border border-gray-400 rounded-full px-8 py-1.5 text-sm bg-white/80 hover:bg-red-50 hover:text-red-600 transition shadow-sm">
-                            Delete
-                        </button>
+                        </a>
+                        <form action="/onsale/delete/<?= $item['id'] ?>" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus ini?');">
+                            <button type="submit" class="w-full border border-gray-400 rounded-full px-8 py-1.5 text-sm bg-white/80 hover:bg-red-50 hover:text-red-600 transition shadow-sm">
+                                Delete
+                            </button>
+                        </form>
                     </div>
 
                 </div>
                 <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

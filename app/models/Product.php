@@ -68,6 +68,8 @@ class Product
             'description' => $this->findColumn(['deskripsi', 'product_desc', 'description'], $columns),
             'image' => $this->findColumn(['gambar', 'product_image', 'image'], $columns),
             'status' => $this->findColumn(['status', 'is_active'], $columns),
+            'category' => $this->findColumn(['category', 'kategori'], $columns),
+            'material' => $this->findColumn(['material', 'bahan'], $columns),
         ];
     }
 
@@ -93,6 +95,8 @@ class Product
             $this->columns['description'] ? "{$this->columns['description']} AS deskripsi" : "NULL AS deskripsi",
             $this->columns['image'] ? "{$this->columns['image']} AS gambar" : "NULL AS gambar",
             $this->columns['status'] ? "{$this->columns['status']} AS status" : "NULL AS status",
+            $this->columns['category'] ? "{$this->columns['category']} AS category" : "NULL AS category",
+            $this->columns['material'] ? "{$this->columns['material']} AS material" : "NULL AS material",
         ];
 
         return implode(', ', $fields);
@@ -121,6 +125,10 @@ class Product
             'image' => $this->columns['image'],
             'status' => $this->columns['status'],
             'is_active' => $this->columns['status'],
+            'category' => $this->columns['category'],
+            'kategori' => $this->columns['category'],
+            'material' => $this->columns['material'],
+            'bahan' => $this->columns['material'],
         ];
 
         return $mapping[$key] ?? null;
