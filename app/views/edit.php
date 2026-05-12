@@ -29,6 +29,7 @@ $isEdit = isset($item) && $item;
 
             <div class="bg-white/40 backdrop-blur-sm border border-gray-400/40 p-8 md:p-12 rounded-[2rem] flex flex-col md:flex-row items-center gap-10">
                 
+
                 <form action="<?= $isEdit ? '/onsale/update/' . $item['id'] : '/onsale/store' ?>" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row items-center w-full gap-10">
                     
                     <div class="relative group">
@@ -37,6 +38,12 @@ $isEdit = isset($item) && $item;
                             <span class="text-white text-xs font-bold bg-black/40 px-2 py-1 rounded">Change Photo</span>
                         </label>
                         <input type="file" id="imageInput" name="image" class="hidden" accept="image/*" onchange="previewImage(event)">
+
+                <div class="relative group">
+                    <img src="../../public/foto/scara.png" alt="Item Preview" class="w-48 h-48 md:w-64 md:h-64 rounded-3xl object-cover shadow-md border-2 border-white/50">
+                    <div class="absolute inset-0 bg-black/10 rounded-3xl opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer">
+                        <span class="text-white text-xs font-bold bg-black/40 px-2 py-1 rounded">Change Photo</span>
+
                     </div>
 
                     <div class="flex-1 w-full space-y-4">
