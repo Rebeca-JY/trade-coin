@@ -8,6 +8,7 @@ class Cart
     private $db;
     private $productTable;
     private $cartTable;
+    private $productColumns = [];
     private $cartHasAddedAt = false;
     private $cartHasCreatedAt = false;
     private $cartHasUpdatedAt = false;
@@ -16,9 +17,76 @@ class Cart
     {
         $this->db = Database::getInstance();
         $this->productTable = $this->resolveProductTable();
+        $this->ensureCartTableExists();
         $this->cartTable = $this->resolveCartTable();
         if ($this->cartTable !== null) {
             $this->resolveCartColumns();
+        }
+        if ($this->productTable !== null) {
+            $this->resolveProductColumns();
+        }
+    }
+
+    private function resolveProductColumns(): void
+    {
+        if ($this->productTable === null) {
+            return;
+        }
+
+        try {
+            $columns = $this->db->select("SHOW COLUMNS FROM {$this->productTable}");
+            $columnNames = [];
+            foreach ($columns as $col) {
+                $columnNames[] = strtolower($col['Field'] ?? '');
+            }
+
+            // Map nama kolom produk dengan berbagai convention
+            $this->productColumns = [
+                'id' => $this->findColumn(['id'], $columnNames),
+                'name' => $this->findColumn(['nama_produk', 'product_name', 'name', 'product'], $columnNames),
+                'price' => $this->findColumn(['harga', 'price', 'cost'], $columnNames),
+                'seller' => $this->findColumn(['nama_penjual', 'seller', 'seller_name', 'penjual'], $columnNames),
+                'image' => $this->findColumn(['gambar', 'image', 'foto', 'product_image'], $columnNames),
+            ];
+        } catch (\Exception $e) {
+            error_log('Error resolving product columns: ' . $e->getMessage());
+        }
+    }
+
+    private function findColumn(array $candidates, array $available): ?string
+    {
+        foreach ($candidates as $candidate) {
+            if (in_array(strtolower($candidate), $available, true)) {
+                return $candidate;
+            }
+        }
+        return null;
+    }
+
+    private function ensureCartTableExists(): void
+    {
+        try {
+            // Cek apakah tabel cart ada
+            $result = $this->db->select("SHOW TABLES LIKE 'cart'");
+            if (!empty($result)) {
+                return; // Tabel sudah ada
+            }
+
+            // Tabel tidak ada, buat sekarang
+            $sql = "CREATE TABLE IF NOT EXISTS cart (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT NOT NULL DEFAULT 1,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_user (user_id),
+                INDEX idx_product (product_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+            $this->db->execute($sql);
+        } catch (\Exception $e) {
+            error_log('Cart table creation error: ' . $e->getMessage());
         }
     }
 
@@ -90,18 +158,58 @@ class Cart
             return [];
         }
 
-        $sql = "SELECT ci.id AS cart_item_id,
-                       ci.product_id,
-                       ci.quantity,
-                       COALESCE(p.nama_produk, p.product_name) AS nama_produk,
-                       COALESCE(p.harga, p.price, 0) AS harga,
-                       COALESCE(p.nama_penjual, p.seller, '') AS nama_penjual,
-                       COALESCE(p.gambar, p.product_image, '') AS gambar
-                FROM {$this->cartTable} ci
-                LEFT JOIN {$this->productTable} p ON ci.product_id = p.id
-                WHERE ci.user_id = ?";
+        // Default columns jika tidak ada yang di-resolve
+        $nameCol = $this->productColumns['name'];
+        $priceCol = $this->productColumns['price'];
+        $sellerCol = $this->productColumns['seller'];
+        $imageCol = $this->productColumns['image'];
 
-        return $this->db->select($sql, [$userId]);
+        // Fallback ke default jika tidak ditemukan
+        if (!$nameCol) {
+            $nameCol = 'nama_produk';
+        }
+        if (!$priceCol) {
+            $priceCol = 'harga';
+        }
+        if (!$sellerCol) {
+            $sellerCol = 'nama_penjual';
+        }
+        if (!$imageCol) {
+            $imageCol = 'gambar';
+        }
+
+        try {
+            $sql = "SELECT ci.id AS cart_item_id,
+                           ci.product_id,
+                           ci.quantity,
+                           COALESCE(p.{$nameCol}, 'Unknown') AS nama_produk,
+                           COALESCE(p.{$priceCol}, 0) AS harga,
+                           COALESCE(p.{$sellerCol}, '') AS nama_penjual,
+                           COALESCE(p.{$imageCol}, '') AS gambar
+                    FROM {$this->cartTable} ci
+                    LEFT JOIN {$this->productTable} p ON ci.product_id = p.id
+                    WHERE ci.user_id = ?";
+
+            return $this->db->select($sql, [$userId]);
+        } catch (\Exception $e) {
+            error_log('Error getting cart items: ' . $e->getMessage());
+            // Return simple fallback query without product details
+            try {
+                $sql = "SELECT ci.id AS cart_item_id,
+                               ci.product_id,
+                               ci.quantity,
+                               'Unknown' AS nama_produk,
+                               0 AS harga,
+                               '' AS nama_penjual,
+                               '' AS gambar
+                        FROM {$this->cartTable} ci
+                        WHERE ci.user_id = ?";
+                return $this->db->select($sql, [$userId]);
+            } catch (\Exception $e2) {
+                error_log('Fallback query failed: ' . $e2->getMessage());
+                return [];
+            }
+        }
     }
 
     public function addItem(int $userId, int $productId, int $quantity): bool

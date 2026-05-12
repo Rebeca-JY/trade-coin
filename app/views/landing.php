@@ -17,15 +17,15 @@
         </section>
 
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            <a href="/topup" class="bg-[#cbeef8] rounded-xl h-40 border border-slate-200 shadow-sm flex items-center justify-center">
+            <a href="<?= htmlspecialchars(url_for('/topup')) ?>" class="bg-[#cbeef8] rounded-xl h-40 border border-slate-200 shadow-sm flex items-center justify-center">
                 <div class="relative">
-                    <img src="/public/foto/coin.png" alt="coin" class="w-10 h-10">
+                    <img src="<?= htmlspecialchars(url_for('/foto/Coin.png')) ?>" alt="coin" class="w-10 h-10">
                     <span class="absolute -right-3 -bottom-3 text-white bg-yellow-500 w-6 h-6 text-sm rounded-full flex items-center justify-center font-bold">+</span>
                 </div>
             </a>
-            <a href="/topup" class="bg-[#cbeef8] rounded-xl h-40 border border-slate-200 shadow-sm flex items-center justify-center">
+            <a href="<?= htmlspecialchars(url_for('/topup')) ?>" class="bg-[#cbeef8] rounded-xl h-40 border border-slate-200 shadow-sm flex items-center justify-center">
                 <div class="text-center">
-                    <img src="/public/foto/coin.png" alt="coin" class="w-10 h-10 mx-auto">
+                    <img src="<?= htmlspecialchars(url_for('/foto/Coin.png')) ?>" alt="coin" class="w-10 h-10 mx-auto">
                     <p class="text-xs mt-3 font-semibold"><?= number_format((int)($userCoins ?? 0)) ?> Coin</p>
                 </div>
             </a>

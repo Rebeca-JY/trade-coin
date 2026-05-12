@@ -100,7 +100,7 @@
             <form method="POST" action="<?= htmlspecialchars($cartAddUrl) ?>" class="inline">
                 <input type="hidden" name="product_id" value="<?= (int) $productIdForCart ?>">
                 <input type="hidden" name="quantity" value="1">
-                <input type="hidden" name="next" value="<?= htmlspecialchars($detailPath) ?>">
+                <input type="hidden" name="next" value="<?= htmlspecialchars(url_for('/cart')) ?>">
                 <button type="submit" <?= $canOrder ? '' : 'disabled' ?>
                     class="w-full sm:w-auto bg-white border-2 border-slate-800 text-slate-900 font-bold px-12 py-3 rounded-2xl hover:bg-slate-50 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                     <i class="fa-solid fa-cart-plus mr-2"></i> Add to cart

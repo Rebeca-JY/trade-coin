@@ -78,8 +78,27 @@ class User
             return false;
         }
 
-        if (!password_verify($password, $user['password'])) {
+        $stored = (string)($user['password'] ?? '');
+        $hashInfo = password_get_info($stored);
+        $isModernHash = ($hashInfo['algo'] ?? 0) !== 0;
+
+        if ($isModernHash) {
+            $valid = password_verify($password, $stored);
+        } else {
+            // Password teks biasa (import SQL / isi manual) — cocokkan lalu upgrade ke hash.
+            $valid = hash_equals($stored, $password);
+        }
+
+        if (!$valid) {
             return false;
+        }
+
+        if (!$isModernHash && $stored !== '') {
+            $this->db->update(
+                'users',
+                ['password' => password_hash($password, PASSWORD_DEFAULT)],
+                ['id' => $user['id']]
+            );
         }
 
         unset($user['password']);

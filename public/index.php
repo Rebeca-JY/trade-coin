@@ -20,9 +20,14 @@ spl_autoload_register(function ($class) {
 });
 
 require_once '../app/core/Router.php';
+require_once '../app/core/CartInitializer.php';
 require_once __DIR__ . '/../app/config/database.php';
 require_once __DIR__ . '/../app/config/app.php';
 use App\Core\Router;
+use App\Core\CartInitializer;
+
+// Ensure cart table exists
+CartInitializer::ensureCartTableExists();
 
 $router = new Router();
 

@@ -19,7 +19,7 @@
     <div class="max-w-5xl mx-auto">
         <header class="flex justify-between items-start mb-8">
             <a href="profile.php" class="font-bold text-lg flex items-center hover:opacity-70 transition">
-                <span class="mr-2">‹</span> Back
+                <a href="/products"><span class="mr-2">‹</span> Back</a>
             </a>
             
             <div class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1 font-bold shadow-sm">

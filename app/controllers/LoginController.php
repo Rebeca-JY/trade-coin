@@ -19,7 +19,7 @@ class LoginController
     public function loginSubmit()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /login');
+            header('Location: ' . url_for('/login'));
             exit;
         }
 
@@ -53,7 +53,7 @@ class LoginController
         } catch (\Throwable $e) {
             $_SESSION['user']['coins'] = (int) ($_SESSION['user']['coins'] ?? 0);
         }
-        header('Location: /profile');
+        header('Location: ' . url_for('/profile'));
         exit;
     }
 
@@ -68,7 +68,7 @@ class LoginController
             setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
         }
         session_destroy();
-        header('Location: /login');
+        header('Location: ' . url_for('/login'));
         exit;
     }
 }
