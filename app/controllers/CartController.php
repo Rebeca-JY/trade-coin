@@ -124,7 +124,7 @@ class CartController
     public function addItem()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: ' . url_for('products'));
+            header('Location: ' . url_for('/products'));
             exit;
         }
 
@@ -133,40 +133,55 @@ class CartController
         $productId = (int) ($_POST['product_id'] ?? 0);
         $quantity = max(1, (int) ($_POST['quantity'] ?? 1));
 
-        if ($productId > 0) {
-            $success = $this->cartModel->addItem($this->userId, $productId, $quantity);
-        } else {
-            $success = false;
+        // Pastikan product_id valid
+        if ($productId <= 0) {
+            $_SESSION['flash_cart_notice'] = [
+                'type' => 'error',
+                'message' => 'Product ID tidak valid. Coba lagi.',
+            ];
+            header('Location: ' . url_for('/products'));
+            exit;
         }
 
+        // Tambah ke cart
+        $success = $this->cartModel->addItem($this->userId, $productId, $quantity);
+
+        // Jika AJAX request, return JSON
         if ($this->isAjaxRequest()) {
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => $success,
                 'product_id' => $productId,
                 'quantity' => $quantity,
+                'user_id' => $this->userId,
             ]);
             exit;
         }
 
+        // Get redirect URL dari form
         $redirect = $this->safeInternalRedirect((string) ($_POST['next'] ?? ''));
 
-        if (!$success && app_path_is_under_products($redirect)) {
-            $_SESSION['flash_cart_notice'] = [
-                'type' => 'error',
-                'message' => 'Gagal menambahkan ke keranjang. Login dulu atau coba lagi.',
-            ];
-        }
-
-        $cartUrl = url_for('cart');
-        if ($success && app_path_is_under_products($redirect) && $redirect !== $cartUrl) {
+        // Set flash message
+        if ($success) {
             $_SESSION['flash_cart_notice'] = [
                 'type' => 'success',
-                'message' => 'Produk ditambahkan ke keranjang.',
+                'message' => 'Produk berhasil ditambahkan ke keranjang!',
+            ];
+            // Jika redirect adalah halaman produk, langsung ke cart
+            if (app_path_is_under_products($redirect)) {
+                header('Location: ' . url_for('/cart'));
+                exit;
+            }
+        } else {
+            $_SESSION['flash_cart_notice'] = [
+                'type' => 'error',
+                'message' => 'Gagal menambahkan ke keranjang. Pastikan Anda sudah login dan coba lagi.',
             ];
         }
 
-        header('Location: ' . $redirect);
+        // Redirect
+        $finalUrl = $success ? (app_path_is_under_products($redirect) ? url_for('/cart') : $redirect) : url_for('/products');
+        header('Location: ' . $finalUrl);
         exit;
     }
 

@@ -31,7 +31,6 @@ function cart_image_url(string $gambar, string $basePath): string
 <main class="max-w-[920px] mx-auto px-5 pt-8 pb-[140px]">
     <div class="mb-6">
         <h1 class="text-3xl font-semibold text-[#0f172a]">Shopping Cart</h1>
-        <p class="text-sm text-[#64748b] mt-1">Keranjang tersimpan di akun Anda (database).</p>
     </div>
 
     <?php if (!empty($checkoutFlash['message'])): ?>

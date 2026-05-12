@@ -21,14 +21,14 @@ if ($loggedIn) {
 
 <nav class="bg-white mx-[5%] my-4 px-8 py-3 flex items-center justify-between shadow-sm rounded-full border border-gray-200 relative z-[1000]">
     <div class="flex items-center">
-        <img src="/foto/logo.png" alt="TradeCoin Logo" class="h-8 object-contain">
+        <a href="/"><img src="/foto/logo.png" alt="TradeCoin Logo" class="h-8 object-contain"></a>
     </div>
 
     <ul class="flex items-center gap-8 list-none m-0 p-0">
         <li><a href="/products" class="text-gray-700 hover:text-black font-medium transition-colors">Search Item & Service</a></li>
         <li><a href="/products-add" class="text-gray-700 hover:text-black font-medium transition-colors">Sell Item & Service</a></li>
-        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Guide</a></li>
-        <li><a href="#" class="text-gray-700 hover:text-black font-medium transition-colors">Contact Us</a></li>
+        <li><a href="/guide" class="text-gray-700 hover:text-black font-medium transition-colors">Guide</a></li>
+        <li><a href="/contact" class="text-gray-700 hover:text-black font-medium transition-colors">Contact Us</a></li>
     </ul>
 
     <div class="flex items-center gap-8">

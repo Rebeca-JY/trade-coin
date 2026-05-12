@@ -37,10 +37,10 @@
             <a href="/products"><button class="font-bold text-lg">‹ Back</button></a>
             <div class="flex flex-col items-end gap-2">
                 <div class="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-1 font-bold">
-                    <img src="/public/foto/Coin 1.png" alt="coin" class="w-5 h-5">
+                    <img src="<?= htmlspecialchars(url_for('/foto/Coin.png')) ?>" alt="coin" class="w-5 h-5">
                     <span><?= $coins ?></span>
                 </div>
-                <button class="border border-gray-300 rounded-full px-5 py-1 text-sm bg-white">On sale</button>
+                <a href="/onsale"><button class="border border-gray-300 rounded-full px-5 py-1 text-sm bg-white">On sale</button></a>
             </div>
         </header>
 
