@@ -27,6 +27,12 @@
     <div class="p-10">
 <form method="POST" action="/register" class="space-y-6">
 
+            <!-- Username -->
+             <div>
+                <label class="block font-bold text-[#3a5a64] mb-1">Username</label>
+                <input type="text" name="username" placeholder="Enter your username"
+                class="w-full bg-transparent border-b border-[#3a5a64] py-2 outline-none text-[#3a5a64]" required>
+            </div>
             <!-- Email -->
             <div>
                 <label class="block font-bold text-[#3a5a64] mb-1">Email</label>

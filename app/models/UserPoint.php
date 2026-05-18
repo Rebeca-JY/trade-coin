@@ -120,7 +120,13 @@ class UserPoint
             $this->db->prepare($sql)->execute([$userId, $points]);
         }
         
-        $this->logActivity($userId, 'add', $points, $reason);
+        // Log activity dengan error handling
+        try {
+            $this->logActivity($userId, 'add', $points, $reason);
+        } catch (\Throwable $e) {
+            // Jangan henti proses hanya karena logging gagal
+            error_log('Point logging failed: ' . $e->getMessage());
+        }
     }
 
     private function logActivity($userId, $action, $amount, $reason)
@@ -140,7 +146,14 @@ class UserPoint
 
         $sql = "UPDATE {$this->table} SET total_points = total_points - ? WHERE user_id = ?";
         $this->db->prepare($sql)->execute([$points, $userId]);
-        $this->logActivity($userId, 'deduct', $points, $reason);
+        
+        // Log activity dengan error handling
+        try {
+            $this->logActivity($userId, 'deduct', $points, $reason);
+        } catch (\Throwable $e) {
+            // Jangan henti proses hanya karena logging gagal
+            error_log('Point logging failed: ' . $e->getMessage());
+        }
     }
 
     public function setPoints($userId, $newTotal, $reason)
@@ -154,7 +167,14 @@ class UserPoint
             $sql = "INSERT INTO {$this->table} (user_id, total_points) VALUES (?, ?)";
             $this->db->prepare($sql)->execute([$userId, $newTotal]);
         }
-        $this->logActivity($userId, 'set', $newTotal, $reason);
+        
+        // Log activity dengan error handling
+        try {
+            $this->logActivity($userId, 'set', $newTotal, $reason);
+        } catch (\Throwable $e) {
+            // Jangan henti proses hanya karena logging gagal
+            error_log('Point logging failed: ' . $e->getMessage());
+        }
     }
 
     public function getPointHistory($userId)

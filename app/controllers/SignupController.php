@@ -26,7 +26,8 @@ class SignupController
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-
+        
+        $username = trim((string)($_POST['username'] ?? ''));
         $email = trim((string)($_POST['email'] ?? ''));
         $password = (string)($_POST['password'] ?? '');
         $confirmPassword = (string)($_POST['confirm_password'] ?? '');
@@ -62,7 +63,6 @@ class SignupController
         // The provided sign-in (registration) form does not include username.
         // We must still populate users.username for compatibility with login.
         // Use email as username by default.
-        $username = $email;
 
         $existingByUsername = $userModel->getUserByUsername($username);
         if ($existingByUsername) {

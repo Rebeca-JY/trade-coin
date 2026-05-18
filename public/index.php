@@ -21,13 +21,18 @@ spl_autoload_register(function ($class) {
 
 require_once '../app/core/Router.php';
 require_once '../app/core/CartInitializer.php';
+require_once '../app/core/PointInitializer.php';
 require_once __DIR__ . '/../app/config/database.php';
 require_once __DIR__ . '/../app/config/app.php';
 use App\Core\Router;
 use App\Core\CartInitializer;
+use App\Core\PointInitializer;
 
 // Ensure cart table exists
 CartInitializer::ensureCartTableExists();
+
+// Ensure point tables exist
+PointInitializer::ensurePointTablesExist();
 
 $router = new Router();
 
@@ -68,6 +73,8 @@ $router->add('GET', '/logout', 'LoginController', 'logout');
 $router->add('GET', '/register', 'SignupController', 'signupView');
 $router->add('POST', '/register', 'SignupController', 'signupSubmit');
 
+// Contact Us Page
+$router->add('GET', '/contact', 'ContactController', 'index');
 
 // Cart actions
 $router->add('GET', '/cart', 'CartController', 'cartView');
