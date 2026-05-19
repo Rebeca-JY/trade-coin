@@ -64,7 +64,7 @@ if ($loggedIn) {
                 </p>
                 <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-regular fa-user w-5 text-center text-gray-500"></i> Account Profile</a>
                 <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-gear w-5 text-center text-gray-500"></i> Account Setting</a>
-                <a href="<?= $loggedIn ? '/profile' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-clock-rotate-left w-5 text-center text-gray-500"></i> History</a>
+                <a href="<?= $loggedIn ? '/history' : '/login' ?>" class="flex items-center gap-3 px-5 py-2.5 text-sm text-[#333] no-underline hover:bg-[#f4f7f8] transition-colors"><i class="fa-solid fa-clock-rotate-left w-5 text-center text-gray-500"></i> History</a>
                 <hr class="border-gray-100 mx-2">
                 <?php if ($loggedIn): ?>
                 <a href="/logout" class="flex items-center gap-3 px-5 py-2.5 text-sm text-red-600 font-bold no-underline hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout</a>

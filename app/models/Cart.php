@@ -8,6 +8,7 @@ class Cart
     private $db;
     private $productTable;
     private $cartTable;
+    private $checkoutTable;
     private $productColumns = [];
     private $cartHasAddedAt = false;
     private $cartHasCreatedAt = false;
@@ -18,6 +19,7 @@ class Cart
         $this->db = Database::getInstance();
         $this->productTable = $this->resolveProductTable();
         $this->ensureCartTableExists();
+        $this->ensureCheckoutTableExists();
         $this->cartTable = $this->resolveCartTable();
         if ($this->cartTable !== null) {
             $this->resolveCartColumns();
@@ -87,6 +89,33 @@ class Cart
             $this->db->execute($sql);
         } catch (\Exception $e) {
             error_log('Cart table creation error: ' . $e->getMessage());
+        }
+    }
+
+    private function ensureCheckoutTableExists(): void
+    {
+        try {
+            // Cek apakah tabel checkout ada
+            $result = $this->db->select("SHOW TABLES LIKE 'checkout'");
+            if (!empty($result)) {
+                return; // Tabel sudah ada
+            }
+
+            // Tabel tidak ada, buat sekarang
+            $sql = "CREATE TABLE IF NOT EXISTS checkout (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT NOT NULL DEFAULT 1,
+                checked_out_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_user (user_id),
+                INDEX idx_product (product_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+            $this->db->execute($sql);
+        } catch (\Exception $e) {
+            error_log('Checkout table creation error: ' . $e->getMessage());
         }
     }
 
@@ -260,6 +289,16 @@ class Cart
         );
     }
 
+    public function getCartItemIdByProduct(int $userId, int $productId): ?int
+    {
+        $row = $this->db->selectOne(
+            "SELECT id FROM {$this->cartTable} WHERE user_id = ? AND product_id = ? LIMIT 1",
+            [$userId, $productId]
+        );
+
+        return !empty($row) ? (int) $row['id'] : null;
+    }
+
     public function updateQuantity(int $userId, int $cartItemId, int $quantity): bool
     {
         if ($this->cartTable === null) {
@@ -301,5 +340,97 @@ class Cart
             "DELETE FROM {$this->cartTable} WHERE user_id = ?",
             [$userId]
         );
+    }
+
+    /**
+     * Move selected items dari cart ke checkout table
+     * @param int $userId User ID
+     * @param array $cartItemIds Array dari cart item IDs yang akan di-checkout
+     * @return bool
+     */
+    public function moveItemsToCheckout(int $userId, array $cartItemIds): bool
+    {
+        if ($this->cartTable === null || empty($cartItemIds)) {
+            return false;
+        }
+
+        try {
+            // Ambil data item dari cart
+            $placeholders = implode(',', array_fill(0, count($cartItemIds), '?'));
+            $sql = "SELECT product_id, quantity FROM {$this->cartTable} 
+                    WHERE user_id = ? AND id IN ({$placeholders})";
+            
+            $params = [$userId];
+            $params = array_merge($params, $cartItemIds);
+            
+            $cartItems = $this->db->select($sql, $params);
+
+            // Insert ke checkout table
+            foreach ($cartItems as $item) {
+                $insertSql = "INSERT INTO checkout (user_id, product_id, quantity) 
+                              VALUES (?, ?, ?)";
+                $this->db->execute($insertSql, [
+                    $userId,
+                    $item['product_id'],
+                    $item['quantity']
+                ]);
+            }
+
+            // Hapus dari cart
+            $deleteSql = "DELETE FROM {$this->cartTable} 
+                          WHERE user_id = ? AND id IN ({$placeholders})";
+            return $this->db->execute($deleteSql, $params);
+
+        } catch (\Exception $e) {
+            error_log('Error moving items to checkout: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get checkout items untuk user tertentu
+     */
+    public function getCheckoutItems(int $userId): array
+    {
+        try {
+            $nameCol = $this->productColumns['name'] ?? 'nama_produk';
+            $priceCol = $this->productColumns['price'] ?? 'harga';
+            $sellerCol = $this->productColumns['seller'] ?? 'nama_penjual';
+            $imageCol = $this->productColumns['image'] ?? 'gambar';
+
+            $sql = "SELECT co.id AS checkout_item_id,
+                           co.product_id,
+                           co.quantity,
+                           COALESCE(p.{$nameCol}, 'Unknown') AS nama_produk,
+                           COALESCE(p.{$priceCol}, 0) AS harga,
+                           COALESCE(p.{$sellerCol}, '') AS nama_penjual,
+                           COALESCE(p.{$imageCol}, '') AS gambar,
+                           co.checked_out_at
+                    FROM checkout co
+                    LEFT JOIN {$this->productTable} p ON co.product_id = p.id
+                    WHERE co.user_id = ?
+                    ORDER BY co.checked_out_at DESC";
+
+            return $this->db->select($sql, [$userId]);
+        } catch (\Exception $e) {
+            error_log('Error getting checkout items: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Clear checkout items untuk user tertentu
+     */
+    public function clearCheckout(int $userId): bool
+    {
+        try {
+            return $this->db->execute(
+                "DELETE FROM checkout WHERE user_id = ?",
+                [$userId]
+            );
+        } catch (\Exception $e) {
+            error_log('Error clearing checkout: ' . $e->getMessage());
+            return false;
+        }
     }
 }

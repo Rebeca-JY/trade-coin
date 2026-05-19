@@ -82,6 +82,10 @@ $router->add('POST', '/cart/add', 'CartController', 'addItem');
 $router->add('POST', '/cart/update', 'CartController', 'updateItem');
 $router->add('POST', '/cart/remove', 'CartController', 'removeItem');
 $router->add('POST', '/cart/checkout', 'CartController', 'checkout');
+$router->add('GET', '/checkout', 'CartController', 'checkoutPreviewView');
+$router->add('POST', '/checkout', 'CartController', 'checkoutPreviewView');
+$router->add('POST', '/cart/checkout-confirm', 'CartController', 'checkoutConfirm');
+$router->add('GET', '/history', 'CartController', 'checkoutHistoryView');
 
 // Profile Page
 $router->add('GET', '/profile', 'ProfileController', 'index');
