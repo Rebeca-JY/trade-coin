@@ -47,7 +47,7 @@ function cart_image_url(string $gambar, string $basePath): string
         </div>
     <?php else: ?>
 
-    <form id="checkout-form" method="POST" action="<?= htmlspecialchars(($basePath ?: '') . '/cart/checkout') ?>" class="hidden" aria-hidden="true"></form>
+    <form id="checkout-form" method="POST" action="<?= htmlspecialchars(($basePath ?: '') . '/checkout') ?>" class="hidden" aria-hidden="true"></form>
 
     <div class="space-y-4">
         <?php foreach ($cartItems as $item):
