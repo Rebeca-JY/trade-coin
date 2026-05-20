@@ -116,7 +116,7 @@ class ProfileController
 
         $ext = $allowedMime[$mime];
         $filename = 'profile_' . (int) $_SESSION['user']['id'] . '_' . time() . '.' . $ext;
-        $relativePath = '/uploads/profiles/' . $filename;
+        $relativePath = '/public/uploads/profiles/' . $filename;
         $targetDir = dirname(__DIR__, 2) . '/public/uploads/profiles';
         $targetPath = $targetDir . '/' . $filename;
 
