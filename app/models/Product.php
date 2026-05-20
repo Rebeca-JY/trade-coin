@@ -2,26 +2,6 @@
 
 namespace App\models;
 
-/**
- * Product Model - Menangani semua operasi data produk
- 
- * Logika Database Produk:
- * ├─ Tabel: products
- * ├─ Fields:
- * │  ├─ id (INT, PRIMARY KEY, AUTO INCREMENT) - Unique identifier, TIDAK ditampilkan ke user
- * │  ├─ nama_produk (VARCHAR 255) - Nama barang yang dijual
- * │  ├─ harga (DECIMAL 10,2) - Harga jual produk
- * │  ├─ nama_penjual (VARCHAR 255) - Nama orang yang menjual
- * │  ├─ deskripsi (TEXT) - Deskripsi detail produk
- * │  ├─ gambar (VARCHAR 255) - Path ke file gambar produk
- * │  ├─ status (ENUM) - active/inactive
- * │  └─ created_at (TIMESTAMP) - Waktu produk dibuat
- * 
- * Flow Data Product:
- * 1. Ketika ambil data produk, ID disimpan di database tapi TIDAK dikirim ke View
- * 2. Frontend menggunakan nama_produk atau field lain sebagai identifier unik
- * 3. Ketika ada operasi yang butuh ID (edit/delete), ambil dari routing atau session
- */
 class Product
 {
     private $db;

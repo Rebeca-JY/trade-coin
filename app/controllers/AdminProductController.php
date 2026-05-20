@@ -1,14 +1,20 @@
 <?php
 namespace App\controllers;
 
+require_once __DIR__ . '/AdminAuthTrait.php';
+
 use App\models\Product;
+use Exception;
 
 class AdminProductController
 {
+    use AdminAuthTrait;
+
     private Product $productModel;
 
     public function __construct()
     {
+        $this->requireAdmin();
         $this->productModel = new Product();
     }
 

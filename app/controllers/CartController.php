@@ -90,7 +90,6 @@ class CartController
         $this->requireLogin();
 
         $checkoutItems = $this->cartModel->getCheckoutItems($this->userId);
-        $checkoutItems = array_slice($checkoutItems, 0, 2);
         
         $checkoutFlash = $_SESSION['flash_checkout'] ?? null;
         unset($_SESSION['flash_checkout']);

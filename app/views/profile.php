@@ -26,9 +26,12 @@
     $coins = $user['coins'] ?? 0;
     $profileImage = $user['profile_image'] ?? '/public/foto/default.png';
     
-    // Fix path foto jika masih relative
+    // Fix path foto jika masih relative atau tanpa public prefix
     if (strpos($profileImage, '../../') === 0) {
         $profileImage = str_replace('../../', '/', $profileImage);
+    }
+    if (strpos($profileImage, '/uploads/') === 0) {
+        $profileImage = '/public' . $profileImage;
     }
     ?>
 
@@ -52,7 +55,7 @@
 
         <section class="flex flex-col items-center text-center mb-12">
             <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-100 mb-4">
-                <img src="<?= $profileImage ?>" alt="Profile" class="w-full h-full object-cover">
+                <img src="<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="w-full h-full object-cover">
             </div>
             <h1 class="text-2xl font-serif text-gray-700"><?= $userName ?></h1>
             <p class="text-gray-500 text-sm"><?= $userEmail ?></p>
@@ -67,7 +70,7 @@
             <div class="bg-[#C9E1E9] p-6 rounded-[2.5rem]">
                 <div class="flex justify-between items-center mb-5 px-2">
                     <h2 class="font-semibold text-lg text-gray-700">Recent Purchase History</h2>
-                    <a href="#" class="text-[10px] underline text-gray-600">see more</a>
+                    <a href="/history" class="text-[10px] underline text-gray-600">see more</a>
                 </div>
                 <div class="space-y-4">
                     <?php if (count($purchases) > 0): ?>

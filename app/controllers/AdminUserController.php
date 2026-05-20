@@ -1,14 +1,20 @@
 <?php
 namespace App\controllers;
 
+require_once __DIR__ . '/AdminAuthTrait.php';
+
 use App\models\User;
+use Exception;
 
 class AdminUserController
 {
+    use AdminAuthTrait;
+
     private User $userModel;
 
     public function __construct()
     {
+        $this->requireAdmin();
         $this->userModel = new User();
     }
 

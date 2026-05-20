@@ -1,16 +1,21 @@
 <?php
 namespace App\controllers;
 
+require_once __DIR__ . '/AdminAuthTrait.php';
+
 use App\models\User;
 use App\models\UserPoint;
 
 class AdminDashboardController
 {
+    use AdminAuthTrait;
+
     private $userModel;
     private $userPointModel;
 
     public function __construct()
     {
+        $this->requireAdmin();
         $this->userModel = new User();
         $this->userPointModel = new UserPoint();
     }
